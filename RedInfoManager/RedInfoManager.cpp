@@ -3,11 +3,11 @@
   *
   * Author: BrainStone
   * Projekt-Version:
-  * v0.0.0
+  * v0.0.2
 */
 
 #include "stdafx.h"
-#include "Form1.h"
+#include "RedInfoManagerForm.h"
 
 using namespace RedInfoManager;
 
@@ -19,6 +19,6 @@ int main(array<System::String ^> ^args)
 	Application::SetCompatibleTextRenderingDefault(false); 
 
 	// Hauptfenster erstellen und ausführen
-	Application::Run(gcnew Form1());
+	Application::Run(gcnew RedInfoManagerForm());
 	return 0;
 }

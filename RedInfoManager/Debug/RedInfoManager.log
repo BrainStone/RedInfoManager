@@ -1,7 +1,7 @@
-﻿Der Buildvorgang wurde am 12.04.2013 23:16:28 gestartet.
+﻿Der Buildvorgang wurde am 12.04.2013 23:32:17 gestartet.
 Projekt "e:\eigene dateien\visual studio 2010\Projects\RedInfoManager\RedInfoManager\RedInfoManager.vcxproj" auf Knoten "2", build Ziel(e).
 InitializeBuildStatus:
-  "Debug\RedInfoManager.unsuccessfulbuild" wird erstellt, da "AlwaysCreate" angegeben wurde.
+  Aktualisieren des Timestamps von "Debug\RedInfoManager.unsuccessfulbuild".
 GenerateTargetFrameworkMonikerAttribute:
 Das Ziel "GenerateTargetFrameworkMonikerAttribute" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
 ClCompile:
@@ -9,12 +9,10 @@ ClCompile:
   c:\Programme\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /AI"C:\Programme\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0" /Zi /clr:pure /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _UNICODE /D UNICODE /EHa /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"Debug\RedInfoManager.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /TP /FU"C:\Programme\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Core.dll" /FU"C:\Programme\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Data.dll" /FU"C:\Programme\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.dll" /FU"C:\Programme\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Drawing.dll" /FU"C:\Programme\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Windows.Forms.dll" /FU"C:\Programme\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Xml.dll" /analyze- /errorReport:prompt RedInfoManager.cpp /clr:nostdlib 
   RedInfoManager.cpp
   Alle Ausgaben sind aktuell.
-CoreResGen:
-  Alle Ausgaben sind aktuell.
 ResourceCompile:
   Alle Ausgaben sind aktuell.
 Link:
-  c:\Programme\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"e:\eigene dateien\visual studio 2010\Projects\RedInfoManager\Debug\RedInfoManager.exe" /INCREMENTAL /NOLOGO /ASSEMBLYRESOURCE:Debug\RedInfoManager.Form1.resources /MANIFEST /ManifestFile:"Debug\RedInfoManager.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"e:\eigene dateien\visual studio 2010\Projects\RedInfoManager\Debug\RedInfoManager.pdb" /ASSEMBLYDEBUG /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"main" /DYNAMICBASE /FIXED:NO /NXCOMPAT /MACHINE:X86 Debug\app.res
+  c:\Programme\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"e:\eigene dateien\visual studio 2010\Projects\RedInfoManager\Debug\RedInfoManager.exe" /INCREMENTAL /NOLOGO /MANIFEST /ManifestFile:"Debug\RedInfoManager.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"e:\eigene dateien\visual studio 2010\Projects\RedInfoManager\Debug\RedInfoManager.pdb" /ASSEMBLYDEBUG /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"main" /DYNAMICBASE /FIXED:NO /NXCOMPAT /MACHINE:X86 Debug\app.res
   Debug\AssemblyInfo.obj
   Debug\RedInfoManager.obj
   Debug\stdafx.obj
@@ -29,4 +27,4 @@ Die Erstellung des Projekts "e:\eigene dateien\visual studio 2010\Projects\RedIn
 
 Das Erstellen war erfolgreich.
 
-Verstrichene Zeit 00:00:03.67
+Verstrichene Zeit 00:00:04.62
