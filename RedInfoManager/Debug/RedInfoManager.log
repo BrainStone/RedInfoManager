@@ -1,7 +1,7 @@
-﻿Der Buildvorgang wurde am 12.04.2013 23:32:17 gestartet.
+﻿Der Buildvorgang wurde am 12.04.2013 23:43:17 gestartet.
 Projekt "e:\eigene dateien\visual studio 2010\Projects\RedInfoManager\RedInfoManager\RedInfoManager.vcxproj" auf Knoten "2", build Ziel(e).
 InitializeBuildStatus:
-  Aktualisieren des Timestamps von "Debug\RedInfoManager.unsuccessfulbuild".
+  "Debug\RedInfoManager.unsuccessfulbuild" wird erstellt, da "AlwaysCreate" angegeben wurde.
 GenerateTargetFrameworkMonikerAttribute:
 Das Ziel "GenerateTargetFrameworkMonikerAttribute" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
 ClCompile:
@@ -27,4 +27,4 @@ Die Erstellung des Projekts "e:\eigene dateien\visual studio 2010\Projects\RedIn
 
 Das Erstellen war erfolgreich.
 
-Verstrichene Zeit 00:00:04.62
+Verstrichene Zeit 00:00:04.39
