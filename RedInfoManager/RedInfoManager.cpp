@@ -1,4 +1,10 @@
-// RedInfoManager.cpp: Hauptprojektdatei.
+/**
+  * Das ist die Haupdatei hier wird alles gestartet!
+  *
+  * Author: BrainStone
+  * Projekt-Version:
+  * v0.0.0
+*/
 
 #include "stdafx.h"
 #include "Form1.h"
