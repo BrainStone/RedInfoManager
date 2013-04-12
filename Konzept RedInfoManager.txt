@@ -1,0 +1,53 @@
+Programm-Name: RedInfoManager
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+-> Suchfunktionen für:
+----------------------
+
+
+
+- Station-ID									(z.B.: "00001")													String		eine Zeile
+- Station 										(z.B.: "Netherwarzenfarm")										String		eine Zeile
+- Kategorie 									(z.B.: "Survival-Anwendungen")									Bolean		Multiple Choice
+- Unterkategorie 								(z.B.: "Farmanlagen")											Bolean		Multiple Choice
+- Position (des Nachrichten-Buttons)			(z.B.: "RedstoneWorld" + "-448 64 -672")						String		eine Zeile
+
+
+
+
+
+
+
+
+-> Informationen die nicht als Suchfunktion dienen:
+---------------------------------------------------
+
+- Artikel in RedstoneWiki.net					(immer Webseite)												String		eine Zeile (Hyperlink)
+- Status																										String		Auswahl
+- Warppunkt vorhanden?							(Warppunkt besteht immer aus der Station-ID)					Bolean		Auswahl (Ja, Nein)
+- Warp-Koordinaten																								String		Auswahl
+
+
+- Link der Quelle 								(Webseite oder Videolink)										String		eine Zeile (Hyperlink)
+- Name des Erbauers								(Ingame-Name, wie "Robert_LP", im Notfall YouTube-Name)			String		eine Zeile
+
+- Fenster mit Zusatz-Inhalt für >Team< (Textdatei-Name)															String		Längerer Text
+
+
+
+
+
+
+
+
+...................................................................................................................................................................................................
+
+
+ Weitere Funktionen:
+~~~~~~~~~~~~~~~~~~~~~
+
+- schnelle aktualisierung der Text-Datei über Root-Zugriff
+- Möglichkeiten des Zurücksetzens einer veränderten Textdatei
+- Liste wann welche Text-Datei geändert wurde mit Datum
+- Möglichkeit schnell eine neue Datei anzulegen inkl. Textdatei (standartmäßig mit UNICODE-Erlaubnis) + Informationenverwaltung
+- 2 Ansichtsmöglichkeiten: Jeweils mit Code- & Vorschau-Ansicht. Schriftfarbe/ ~art in Code-Ansicht anzeigen, in Vorschau-Ansicht umwandeln.
