@@ -1,4 +1,4 @@
 RedInfoManager
 ==============
 
-Redstone-Kunstruktionen-Verwaltungs-Programm
+Verwaltungs-Programm für Redstonekonstruktionen
