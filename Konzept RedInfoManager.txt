@@ -6,11 +6,11 @@ Programm-Name: RedInfoManager
 
 
 
-- Station-ID									(z.B.: "00001")													String		eine Zeile
-- Station 										(z.B.: "Netherwarzenfarm")										String		eine Zeile
-- Kategorie 									(z.B.: "Survival-Anwendungen")									Bolean		Multiple Choice
-- Unterkategorie 								(z.B.: "Farmanlagen")											Bolean		Multiple Choice
-- Position (des Nachrichten-Buttons)			(z.B.: "RedstoneWorld" + "-448 64 -672")						String		eine Zeile
+- Station-ID				(z.B.: "00001")							String		eine Zeile
+- Station 				(z.B.: "Netherwarzenfarm")					String		eine Zeile
+- Kategorie 				(z.B.: "Survival-Anwendungen")					Bolean		Multiple Choice
+- Unterkategorie 			(z.B.: "Farmanlagen")						Bolean		Multiple Choice
+- Position (des Nachrichten-Buttons)	(z.B.: "RedstoneWorld" + "-448 64 -672")			String		eine Zeile
 
 
 
@@ -22,16 +22,16 @@ Programm-Name: RedInfoManager
 -> Informationen die nicht als Suchfunktion dienen:
 ---------------------------------------------------
 
-- Artikel in RedstoneWiki.net					(immer Webseite)												String		eine Zeile (Hyperlink)
-- Status																										String		Auswahl
-- Warppunkt vorhanden?							(Warppunkt besteht immer aus der Station-ID)					Bolean		Auswahl (Ja, Nein)
-- Warp-Koordinaten																								String		Auswahl
+- Artikel in RedstoneWiki.net		(immer Webseite)						String		eine Zeile (Hyperlink)
+- Status												String		Auswahl
+- Warppunkt vorhanden?			(Warppunkt besteht immer aus der Station-ID)			Bolean		Auswahl (Ja, Nein)
+- Warp-Koordinaten											String		Auswahl
 
 
-- Link der Quelle 								(Webseite oder Videolink)										String		eine Zeile (Hyperlink)
-- Name des Erbauers								(Ingame-Name, wie "Robert_LP", im Notfall YouTube-Name)			String		eine Zeile
+- Link der Quelle 			(Webseite oder Videolink)					String		eine Zeile (Hyperlink)
+- Name des Erbauers			(Ingame-Name, wie "Robert_LP", auch YouTube-Name im Notfall)	String		eine Zeile
 
-- Fenster mit Zusatz-Inhalt für >Team< (Textdatei-Name)															String		Längerer Text
+- Fenster mit Zusatz-Inhalt für >Team< 	(Textdatei-Name)						String		Längerer Text
 
 
 
