@@ -4,22 +4,17 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.0.12  
+  *   v0.1.0  
   */
-
 // Code
 session_start();
 register_shutdown_function("display");
-
 $time = $_SERVER["REQUEST_TIME"];
 $title = "";
 $output = "";
 $ftp = null;
-
 session_handler();
-
 check_connection();
-
 switch($_SESSION["state"])
 {
   case 0:
@@ -32,9 +27,7 @@ switch($_SESSION["state"])
     ;
     break;
 }
-
 // Funktionen
-
 function session_handler()
 {
   global $time;
@@ -62,7 +55,6 @@ function session_handler()
   
   $_SESSION["lastaction"] = $time;
 }
-
 function check_connection()
 {  
   global $title, $output, $ftp;
@@ -90,47 +82,52 @@ function check_connection()
   
   @ftp_close($ftp);
 }
-
 function login_page()
 {
   global $output;
   
-  $output .=
+  if(isset($_POST["action"]) && isset($_POST["username"]) && isset($_POST["password"]) && ($_POST["action"] == "login"))
+  {
+    $ftp = @ftp_connect("faldoria.com", 2121);
+    
+  }
+  else
+  {
+    $output .=
 "<form action=\"POST\">
 Benutzername: <input type=\"text\" name=\"username\"><br>
-Password: <input type=\"password\" name=\"password\">
-<iput type=\"submitt\" value=\"Anmelden\">
+Password: <input type=\"password\" name=\"password\"><br>
+<input type=\"submit\" value=\"Anmelden\">
 <input type=\"hidden\" name=\"action\" value=\"login\">
 </form>";
+  }
 }
-
 function display()
 {
   global $title, $output, $ftp;
   
 ?>
 <!DOCTYPE HTML>
-<html>
-  <head>
-    <meta name="author" content="BrainStone">
-    <meta name="publisher" content="RobertLP">
-    <meta name="copyright" content="BrainStone">
-    <meta http-equiv="content-language" content="de">
-    <meta name="robots" content="noindex, nofollow">
-    <title>RedInfoManager<?php
-
+<html>  
+  <head>    
+    <meta name="author" content="BrainStone">    
+    <meta name="publisher" content="RobertLP">    
+    <meta name="copyright" content="BrainStone">    
+    <meta http-equiv="content-language" content="de">    
+    <meta name="robots" content="noindex, nofollow">    
+    <title>RedInfoManager
+<?php
   echo ($title != "") ? (" - $title") : "";
   
-?></title>
-  </head>
+      ?>
+    </title>  
+  </head>  
   <body>
 <?php
-
   //echo ($output == "") ? "" : $output;
   echo $output;
   
-?>
-
+    ?>  
   </body>
 </html>
 <?php
