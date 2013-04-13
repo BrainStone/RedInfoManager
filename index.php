@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.1.8  
+  *   v0.1.9  
   */
 // Code
 session_start();
@@ -41,9 +41,13 @@ function session_handler()
   
   if($time - $_SESSION["lastaction"] > $_SESSION["timeout"])
   {
+    if($_SESSION["state"] != 0)
+    {
+      $output .= "<h2>Die Sitzung ist abgelaufen!</h2>\n";
+    }
+    
     $_SESSION["state"] = 0;
     $_SESSION["timeout"] = 300;
-    $output .= "<h2>Die Sitzung ist abgelaufen!</h2>\n";
   }
   
   if(!isset($_SESSION["state"]))
