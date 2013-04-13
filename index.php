@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.1.10  
+  *   v0.1.11  
   */
 // Code
 
@@ -42,6 +42,11 @@ function session_handler()
     $_SESSION["timeout"] = 300;
   }
   
+  if(!isset($_SESSION["state"]))
+  {
+    $_SESSION["state"] = 0;
+  }
+  
   if($time - $_SESSION["lastaction"] > $_SESSION["timeout"])
   {
     if($_SESSION["state"] != 0)
@@ -51,11 +56,6 @@ function session_handler()
     
     $_SESSION["state"] = 0;
     $_SESSION["timeout"] = 300;
-  }
-  
-  if(!isset($_SESSION["state"]))
-  {
-    $_SESSION["state"] = 0;
   }
   
   $_SESSION["lastaction"] = $time;
