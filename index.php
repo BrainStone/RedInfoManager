@@ -4,18 +4,21 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.1.11  
+  *   v0.1.12  
   */
 // Code
 
 session_start();
 register_shutdown_function("display");
+
 $time = $_SERVER["REQUEST_TIME"];
 $title = "";
 $output = "";
 $ftp = null;
+
 session_handler();
 check_connection();
+
 switch($_SESSION["state"])
 {
   case 0:
