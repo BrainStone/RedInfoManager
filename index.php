@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.1.7  
+  *   v0.1.8  
   */
 // Code
 session_start();
@@ -27,7 +27,7 @@ switch($_SESSION["state"])
 // Funktionen
 function session_handler()
 {
-  global $time;
+  global $time, $output;
   
   if(!isset($_SESSION["lastaction"]))
   {
@@ -43,6 +43,7 @@ function session_handler()
   {
     $_SESSION["state"] = 0;
     $_SESSION["timeout"] = 300;
+    $output .= "<h2>Die Sitzung ist abgelaufen!</h2>\n";
   }
   
   if(!isset($_SESSION["state"]))
