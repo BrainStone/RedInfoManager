@@ -4,9 +4,10 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.1.9  
+  *   v0.1.10  
   */
 // Code
+
 session_start();
 register_shutdown_function("display");
 $time = $_SERVER["REQUEST_TIME"];
@@ -24,7 +25,9 @@ switch($_SESSION["state"])
     display_data();
     break;
 }
+
 // Funktionen
+
 function session_handler()
 {
   global $time, $output;
@@ -57,6 +60,7 @@ function session_handler()
   
   $_SESSION["lastaction"] = $time;
 }
+
 function check_connection()
 {  
   global $title, $output, $ftp;
@@ -73,6 +77,7 @@ function check_connection()
   
   @ftp_close($ftp);
 }
+
 function login_page()
 {
   global $output;
