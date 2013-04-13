@@ -4,16 +4,17 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.0.7  
+  *   v0.0.12  
   */
 
 // Code
 session_start();
 register_shutdown_function("display");
 
-$time = $_SERVER['REQUEST_TIME'];
+$time = $_SERVER["REQUEST_TIME"];
 $title = "";
 $output = "";
+$ftp = null;
 
 session_handler();
 
@@ -22,7 +23,7 @@ check_connection();
 switch($_SESSION["state"])
 {
   case 0:
-    ;
+    login_page();
     break;
   case 1:
     ;
@@ -36,6 +37,8 @@ switch($_SESSION["state"])
 
 function session_handler()
 {
+  global $time;
+  
   if(!isset($_SESSION["lastaction"]))
   {
     $_SESSION["lastaction"] = 0;
@@ -62,11 +65,13 @@ function session_handler()
 
 function check_connection()
 {  
-  global $title, $output;
+  global $title, $output, $ftp;
   
-  if(ftp_connect("56") === false)
-  {
+  if(($ftp = @ftp_connect("faldoria.com", 2121)) === false)
+  {  
     // Session beenden
+    // 4569rsw
+    // 
     $_SESSION = array();
     if (ini_get("session.use_cookies"))
     {
@@ -77,18 +82,31 @@ function check_connection()
     }
     session_destroy();
     
-    $title += "FTP-Verbindungsfehler";
-    $output += "<h1>Keine Verbindung mit dem FTP-Server möglich!</h1>";
+    $title .= "FTP-Verbindungsfehler";
+    $output .= "<h1>Keine Verbindung mit dem FTP-Server möglich!</h1>";
     
     exit();
   }
   
-  ftp_close();
+  @ftp_close($ftp);
+}
+
+function login_page()
+{
+  global $output;
+  
+  $output .=
+"<form action=\"POST\">
+Benutzername: <input type=\"text\" name=\"username\"><br>
+Password: <input type=\"password\" name=\"password\">
+<iput type=\"submitt\" value=\"Anmelden\">
+<input type=\"hidden\" name=\"action\" value=\"login\">
+</form>";
 }
 
 function display()
 {
-  global $title, $output;
+  global $title, $output, $ftp;
   
 ?>
 <!DOCTYPE HTML>
@@ -108,13 +126,15 @@ function display()
   <body>
 <?php
 
+  //echo ($output == "") ? "" : $output;
   echo $output;
   
 ?>
+
   </body>
 </html>
 <?php
   
-  ftp_close();
+  @ftp_close($ftp);
 }
 ?>
