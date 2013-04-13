@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.0.4  
+  *   v0.0.7  
   */
 
 // Code
@@ -32,13 +32,11 @@ switch($_SESSION["state"])
     break;
 }
 
-display();
-
 // Funktionen
 
 function session_handler()
 {
-  if(!isset($_SESSION["lastaction"])
+  if(!isset($_SESSION["lastaction"]))
   {
     $_SESSION["lastaction"] = 0;
   }
@@ -63,26 +61,45 @@ function session_handler()
 }
 
 function check_connection()
-{
-  if(ftp_connect("") !== false)
+{  
+  global $title, $output;
+  
+  if(ftp_connect("56") === false)
   {
+    // Session beenden
+    $_SESSION = array();
+    if (ini_get("session.use_cookies"))
+    {
+      $params = session_get_cookie_params();
+      setcookie(session_name(), '', time() - 42000, $params["path"],
+          $params["domain"], $params["secure"], $params["httponly"]
+      );
+    }
     session_destroy();
     
-    $title += "FTP-Verbindungsfehler"
-    $output += "<h1>Keine Verbindung mit dem FTP-Server möglich!</h1>"
+    $title += "FTP-Verbindungsfehler";
+    $output += "<h1>Keine Verbindung mit dem FTP-Server möglich!</h1>";
     
     exit();
   }
+  
+  ftp_close();
 }
 
 function display()
 {
+  global $title, $output;
+  
 ?>
 <!DOCTYPE HTML>
 <html>
   <head>
-    <title>RedInfoManager
-<?php
+    <meta name="author" content="BrainStone">
+    <meta name="publisher" content="RobertLP">
+    <meta name="copyright" content="BrainStone">
+    <meta http-equiv="content-language" content="de">
+    <meta name="robots" content="noindex, nofollow">
+    <title>RedInfoManager<?php
 
   echo ($title != "") ? (" - $title") : "";
   
@@ -97,5 +114,7 @@ function display()
   </body>
 </html>
 <?php
+  
+  ftp_close();
 }
 ?>
