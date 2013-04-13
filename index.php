@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.0.3  
+  *   v0.0.4  
   */
 
 // Code
@@ -15,16 +15,7 @@ $time = $_SERVER['REQUEST_TIME'];
 $title = "";
 $output = "";
 
-if(!isset($_SESSION["lastlogin"])
-{
-  $_SESSION["lastlogin"] = $time;
-  $_SESSION["state"] = 0;
-}
-
-if(!isset())
-{
-  $_SESSION["state"] = 0;
-}
+session_handler();
 
 check_connection();
 
@@ -44,6 +35,32 @@ switch($_SESSION["state"])
 display();
 
 // Funktionen
+
+function session_handler()
+{
+  if(!isset($_SESSION["lastaction"])
+  {
+    $_SESSION["lastaction"] = 0;
+  }
+  
+  if(!isset($_SESSION["timeout"]))
+  {
+    $_SESSION["timeout"] = 300;
+  }
+  
+  if($time - $_SESSION["lastaction"] > $_SESSION["timeout"])
+  {
+    $_SESSION["state"] = 0;
+    $_SESSION["timeout"] = 300;
+  }
+  
+  if(!isset($_SESSION["state"]))
+  {
+    $_SESSION["state"] = 0;
+  }
+  
+  $_SESSION["lastaction"] = $time;
+}
 
 function check_connection()
 {
