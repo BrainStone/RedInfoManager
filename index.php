@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.1.3  
+  *   v0.1.5  
   */
 // Code
 session_start();
@@ -21,7 +21,7 @@ switch($_SESSION["state"])
     login_page();
     break;
   case 1:
-    ;
+    display_data();
     break;
 }
 // Funktionen
@@ -58,17 +58,7 @@ function check_connection()
   
   if(($ftp = @ftp_connect("faldoria.com", 2121)) === false)
   {  
-    // Session beenden
-    // 78630rsw
-    $_SESSION = array();
-    if (ini_get("session.use_cookies"))
-    {
-      $params = session_get_cookie_params();
-      setcookie(session_name(), '', time() - 42000, $params["path"],
-          $params["domain"], $params["secure"], $params["httponly"]
-      );
-    }
-    session_destroy();
+    destroy_session();
     
     $title .= "FTP-Verbindungsfehler";
     $output .= "<h1>Keine Verbindung mit dem FTP-Server möglich!</h1>";
@@ -91,6 +81,8 @@ function login_page()
       $output .= "<h2>Anmeldung erfolgreich!</h2>";
       $_SESSION["state"] = 1;
       
+      display_data();
+      
       return;
     }
     
@@ -105,6 +97,39 @@ Password: <input type=\"password\" name=\"password\"><br>
 <input type=\"hidden\" name=\"action\" value=\"login\">
 </form>";
 }
+
+function display_data()
+{
+  if(isset($_POST["action"])($_POST["action"] == "logout"))
+  {
+    destroy_session();
+    
+    login_page();
+    
+    return;
+  }
+  
+  $output .=
+"<form method=\"POST\">
+<input type=\"submit\" value=\"Abmelden\">
+<input type=\"hidden\" name=\"action\" value=\"logout\">";
+}
+
+function destroy_session()
+{
+  // Session beenden
+  // 78630rsw
+  $_SESSION = array();
+  if (ini_get("session.use_cookies"))
+  {
+    $params = session_get_cookie_params();
+    setcookie(session_name(), '', time() - 42000, $params["path"],
+        $params["domain"], $params["secure"], $params["httponly"]
+    );
+  }
+  session_destroy();
+}
+
 function display()
 {
   global $title, $output, $ftp;
