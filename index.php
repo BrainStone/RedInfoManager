@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.1.6  
+  *   v0.1.7  
   */
 // Code
 session_start();
@@ -100,6 +100,8 @@ Password: <input type=\"password\" name=\"password\"><br>
 
 function display_data()
 {
+  global $output;
+  
   if(isset($_POST["action"]) && ($_POST["action"] == "logout"))
   {
     destroy_session();
