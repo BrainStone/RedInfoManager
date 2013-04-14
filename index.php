@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.2.1
+  *   v0.2.2
   */
 // Code
 
@@ -192,7 +192,6 @@ function short_string($string, $length)
 function destroy_session()
 {
   // Session beenden
-  // 78630rsw
   $_SESSION = array();
   if (ini_get("session.use_cookies"))
   {
