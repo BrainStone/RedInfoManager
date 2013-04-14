@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.1.12  
+  *   v0.1.13  
   */
 // Code
 
@@ -77,8 +77,6 @@ function check_connection()
     
     exit();
   }
-  
-  @ftp_close($ftp);
 }
 
 function login_page()
@@ -87,8 +85,6 @@ function login_page()
   
   if(isset($_POST["action"]) && isset($_POST["username"]) && isset($_POST["password"]) && ($_POST["action"] == "login"))
   {
-    $ftp = @ftp_connect("faldoria.com", 2121);
-    
     if(@ftp_login($ftp, $_POST["username"], $_POST["password"]))
     {
       $output .= "<h2>Anmeldung erfolgreich!</h2>";
