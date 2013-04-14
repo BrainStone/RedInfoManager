@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.2.2
+  *   v0.2.3
   */
 // Code
 
@@ -124,7 +124,8 @@ function display_data()
 "<form method=\"POST\">
 <input type=\"submit\" value=\"Abmelden\">
 <input type=\"hidden\" name=\"action\" value=\"logout\">
-</form>\n";
+</form>
+<br>\n";
 
   $mysqli = new mysqli("localhost", "root", "", "redinfomanager");
   if($mysqli->connect_errno)

@@ -1,1 +1,16 @@
 /* CSS Document */
+
+table tr:nth-child(2n)
+{
+  background-color: #DDDDDD;
+}
+
+table tr:nth-child(2n + 1)
+{
+  background-color: #CCCCCC;
+}
+
+table tr:nth-child(1)
+{
+  background-color: #AAAAAA;
+}
