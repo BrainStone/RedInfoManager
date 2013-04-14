@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.2.3
+  *   v0.2.6
   */
 // Code
 
@@ -14,6 +14,7 @@ register_shutdown_function("display");
 $time = $_SERVER["REQUEST_TIME"];
 $title = "";
 $output = "";
+$notifications = array();
 $ftp = null;
 
 session_handler();
@@ -33,7 +34,7 @@ switch($_SESSION["state"])
 
 function session_handler()
 {
-  global $time, $output;
+  global $time, $output, $notifications;
   
   if(!isset($_SESSION["lastaction"]))
   {
@@ -54,7 +55,7 @@ function session_handler()
   {
     if($_SESSION["state"] != 0)
     {
-      $output .= "<h2>Die Sitzung ist abgelaufen!</h2>\n";
+      $notifications[] = "Die Sitzung ist abgelaufen!";
     }
     
     $_SESSION["state"] = 0;
@@ -87,7 +88,7 @@ function login_page()
   {
     if(@ftp_login($ftp, $_POST["username"], $_POST["password"]))
     {
-      $output .= "<h2>Anmeldung erfolgreich!</h2>";
+      $output .= "<div id=\"meldung\"><p>Anmeldung erfolgreich!</p></div>";
       $_SESSION["state"] = 1;
       
       display_data();
@@ -206,7 +207,7 @@ function destroy_session()
 
 function display()
 {
-  global $title, $output, $ftp;
+  global $title, $output, $ftp, $notifications;
   
 ?>
 <!DOCTYPE HTML>
@@ -221,17 +222,30 @@ function display()
     <script language="JavaScript" src="script.js"></script>    
     <title>RedInfoManager
 <?php
+
   echo ($title != "") ? (" - $title") : "";
   
-      ?>
+?>
     </title>  
   </head>  
   <body>
 <?php
-  //echo ($output == "") ? "" : $output;
+
+  if(count($notifications))
+  {
+    echo "<div id=\"meldung\">";
+    
+    foreach($notifications as $text)
+    {
+      echo "<p>$text</p>";
+    }
+    
+    echo "</div>\n";
+  }
+    
   echo $output;
   
-    ?>  
+?>  
   </body>
 </html>
 <?php
