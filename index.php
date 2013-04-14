@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.1.13  
+  *   v0.1.14
   */
 // Code
 
@@ -81,7 +81,7 @@ function check_connection()
 
 function login_page()
 {
-  global $output;
+  global $output, $ftp;
   
   if(isset($_POST["action"]) && isset($_POST["username"]) && isset($_POST["password"]) && ($_POST["action"] == "login"))
   {
@@ -123,7 +123,53 @@ function display_data()
   $output .=
 "<form method=\"POST\">
 <input type=\"submit\" value=\"Abmelden\">
-<input type=\"hidden\" name=\"action\" value=\"logout\">";
+<input type=\"hidden\" name=\"action\" value=\"logout\">
+</form>\n";
+
+  $mysqli = new mysqli("localhost", "root", "", "redinfomanager");
+  if($mysqli->connect_errno)
+  {
+    die("Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error);
+  }
+  
+  $output .= printTable($mysqli->query("SELECT * FROM `redinfomanager`"), true);
+}
+
+function printTable($result, $return)
+{
+  $output = "<table>\n<tr>";
+  
+  $row = $result->fetch_assoc();
+  
+  foreach($row as $field => $x)
+  {
+    $output .= "<th>$field</th>";
+  }
+  
+  $output .= "</tr>\n";
+  
+  $result->data_seek(0);
+  
+  while($row = $result->fetch_assoc())
+  {
+    $output .= "<tr>";
+    
+    foreach($row as $field => $value)
+    {
+      $output .= "<td>$value</td>";
+    }
+    
+    $output .= "</tr>\n";
+  }
+  
+  $output .= "</table>\n";
+  
+  if($return)
+  {
+    return $output;
+  }
+  
+  echo $output; 
 }
 
 function destroy_session()
