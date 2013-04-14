@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.2.6
+  *   v0.2.7
   */
 // Code
 
@@ -82,13 +82,13 @@ function check_connection()
 
 function login_page()
 {
-  global $output, $ftp;
+  global $output, $ftp, $notifications;
   
   if(isset($_POST["action"]) && isset($_POST["username"]) && isset($_POST["password"]) && ($_POST["action"] == "login"))
   {
     if(@ftp_login($ftp, $_POST["username"], $_POST["password"]))
     {
-      $output .= "<div id=\"meldung\"><p>Anmeldung erfolgreich!</p></div>";
+      $notifications[] = "Anmeldung erfolgreich!";
       $_SESSION["state"] = 1;
       
       display_data();
