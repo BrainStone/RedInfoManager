@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.1.14
+  *   v0.1.17
   */
 // Code
 
@@ -132,7 +132,7 @@ function display_data()
     die("Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error);
   }
   
-  $output .= printTable($mysqli->query("SELECT * FROM `redinfomanager`"), true);
+  $output .= printTable($mysqli->query("SELECT `Station-ID`, `Station`, CONCAT(`Kategorie`, ' (', `Unterkategorie`, ')') AS `Kategorie`, CONCAT(`Position-Welt`, ': ', `Position-X`, ', ', `Position-Y`, ', ', `Position-Z`) AS `Position`, `Artikel`, `Status`, CONCAT(`Position-Welt`, ': ', `Warp-X`, ', ', `Warp-Y`, ', ', `Warp-Z`) AS `Warp`, `Quelle`, `Erbauer`, `Info`, `Team-Info` FROM `redinfomanager` WHERE 1"), true);
 }
 
 function printTable($result, $return)
@@ -156,6 +156,11 @@ function printTable($result, $return)
     
     foreach($row as $field => $value)
     {
+      if(strpos($field, "Info") !== false)
+      {
+        $value = short_string($value, 50);
+      }
+      
       $output .= "<td>$value</td>";
     }
     
@@ -170,6 +175,18 @@ function printTable($result, $return)
   }
   
   echo $output; 
+}
+
+function short_string($string, $length)
+{
+  if(strlen($string) <= $length)
+  {
+    return $string;
+  }
+  
+  $string = wordwrap($string, $length - 3, "\n", true);
+  
+  return substr($string, 0, strpos($string, "\n")) . "...";
 }
 
 function destroy_session()
