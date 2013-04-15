@@ -29,37 +29,37 @@ td, th
   height: 22px;
 }
 
-td:nth-child(1), th:nth-child(1)
+th:nth-child(1)
 {
   width: 50px;
 }
 
-td:nth-child(2), th:nth-child(2)
+th:nth-child(2)
 {
   width: 150px;
 }
 
-td:nth-child(4), th:nth-child(4), td:nth-child(8), th:nth-child(8)
+th:nth-child(4), th:nth-child(8)
 {
   width: 180px;
 }
 
-td:nth-child(5), th:nth-child(5), td:nth-child(7), th:nth-child(7)
+th:nth-child(5), th:nth-child(7)
 {
   width: 100px;
 }
 
-td:nth-child(6), th:nth-child(6)
+th:nth-child(6)
 {
   width: 110px;
 }
 
-td:nth-child(10), th:nth-child(10)
+th:nth-child(10)
 {
   width: 150px;
 }
 
-td:nth-child(11), th:nth-child(11), td:nth-child(12), th:nth-child(12)
+th:nth-child(11), th:nth-child(12)
 {
   width: 300px;
 }
