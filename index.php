@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.2.9
+  *   v0.2.10
   */
 // Code
 
@@ -14,6 +14,7 @@ register_shutdown_function("display");
 $time = $_SERVER["REQUEST_TIME"];
 $title = "";
 $output = "";
+$data = array();
 $notifications = array();
 $ftp = null;
 
@@ -82,7 +83,9 @@ function check_connection()
 
 function login_page()
 {
-  global $output, $ftp, $notifications;
+  global $output, $ftp, $notifications, $title;
+  
+  $title .= "Login";
   
   if(isset($_POST["action"]) && isset($_POST["username"]) && isset($_POST["password"]) && ($_POST["action"] == "login"))
   {
@@ -110,7 +113,9 @@ Password: <input type=\"password\" name=\"password\"><br>
 
 function display_data()
 {
-  global $output;
+  global $output, $title, $data;
+  
+  $title .= "Admin-Seite";
   
   if(isset($_POST["action"]) && ($_POST["action"] == "logout"))
   {
@@ -135,6 +140,13 @@ function display_data()
   }
   
   $output .= printTable($mysqli->query("SELECT `Station-ID` AS `ID`, `Station`, CONCAT(`Kategorie`, ' (', `Unterkategorie`, ')') AS `Kategorie`, CONCAT(`Position-Welt`, ': ', `Position-X`, ', ', `Position-Y`, ', ', `Position-Z`) AS `Position`, `Artikel`, `Stations-Status`, `Info-Status`, CONCAT(`Position-Welt`, ': ', `Warp-X`, ', ', `Warp-Y`, ', ', `Warp-Z`) AS `Warp`, `Quelle`, `Erbauer`, `Info`, `Team-Info` FROM `redinfomanager` WHERE 1"), true);
+  
+  $result = $mysqli->query("SELECT * FROM `redinfomanager`");
+  $data = array();
+  while($r = $result->fetch_assoc())
+  {
+    $data[] = $r;
+  }
 }
 
 function printTable($result, $return)
@@ -214,7 +226,7 @@ function destroy_session()
 
 function display()
 {
-  global $title, $output, $ftp, $notifications;
+  global $title, $output, $ftp, $notifications, $data;
   
 ?>
 <!DOCTYPE HTML>
@@ -227,14 +239,16 @@ function display()
     <meta name="robots" content="noindex, nofollow">
     <link rel="stylesheet" type="text/css" href="style.css">
     <script language="JavaScript" src="../core/js/jquery.js"></script>
-    <script language="JavaScript" src="script.js"></script>    
-    <title>RedInfoManager
-<?php
+    <script language="JavaScript" src="script.js"></script>
+    <script>
+     var rawdata = <?php echo json_encode($data); ?>;
+    </script>    
+    <title>RedInfoManager<?php
 
   echo ($title != "") ? (" - $title") : "";
   
 ?>
-    </title>  
+</title>  
   </head>  
   <body>
 <?php
@@ -253,7 +267,8 @@ function display()
     
   echo $output;
   
-?>  
+?>
+
   </body>
 </html>
 <?php
