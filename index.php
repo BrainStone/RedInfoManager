@@ -168,19 +168,19 @@ function printTable($result, $return)
   
   while($row = $result->fetch_assoc())
   {
-    $output .= "<tr>";
+    $output .= "<tr id=\"#$i\">";
     $j = 0;
     
     foreach($row as $field => $value)
-    {
-      $j++;
-      
+    {     
       if(strpos($field, "Info") !== false)
       {
         $value = short_string($value, 50);
       }
       
       $output .= "<td id=\"#$i#$j\">$value</td>";
+      
+      $j++;
     }
     
     $output .= "</tr>\n";
