@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.2.7
+  *   v0.2.9
   */
 // Code
 
@@ -152,21 +152,28 @@ function printTable($result, $return)
   
   $result->data_seek(0);
   
+  $i = 0;
+  
   while($row = $result->fetch_assoc())
   {
     $output .= "<tr>";
+    $j = 0;
     
     foreach($row as $field => $value)
     {
+      $j++;
+      
       if(strpos($field, "Info") !== false)
       {
         $value = short_string($value, 50);
       }
       
-      $output .= "<td>$value</td>";
+      $output .= "<td id=\"#$i#$j\">$value</td>";
     }
     
     $output .= "</tr>\n";
+    
+    $i++;
   }
   
   $output .= "</table>\n";
@@ -219,6 +226,7 @@ function display()
     <meta http-equiv="content-language" content="de">    
     <meta name="robots" content="noindex, nofollow">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <script language="JavaScript" src="../core/js/jquery.js"></script>
     <script language="JavaScript" src="script.js"></script>    
     <title>RedInfoManager
 <?php
