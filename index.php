@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.4.37
+  *   v0.4.42
   */
 // Code
 
@@ -150,12 +150,16 @@ function display_data()
   
   $output .= printTable($mysqli->query("SELECT `Station-ID` AS `ID`, `Station`, CONCAT(`Kategorie`, ' (', `Unterkategorie`, ')') AS `Kategorie`, CONCAT(`Position-Welt`, ': ', `Position-X`, ', ', `Position-Y`, ', ', `Position-Z`) AS `Position`, `Artikel`, `Stations-Status`, `Info-Status`, CONCAT(`Position-Welt`, ': ', `Warp-X`, ', ', `Warp-Y`, ', ', `Warp-Z`) AS `Warp`, `Quelle`, `Erbauer`, `Info`, `Team-Info` FROM `redinfomanager` WHERE 1"), true);
   
-  $result = $mysqli->query("SELECT * FROM `redinfomanager`");
+  $result = $mysqli->query("SELECT `Station-ID`, `Station`, `Kategorie`, `Unterkategorie`, `Position-Welt`, `Position-X`, `Position-Y`, `Position-Z`, `Artikel`, `Stations-Status`, `Info-Status`, `Warp-X`, `Warp-Y`, `Warp-Z`, `Quelle`, `Erbauer`, `Info`, `Team-Info` FROM `redinfomanager` WHERE 1");
   $data = array();
+  
   while($r = $result->fetch_assoc())
   {
     $data[] = $r;
   }
+  
+  $result->free();
+  $mysqli->close();
 }
 
 function printTable($result, $return)
@@ -199,6 +203,8 @@ function printTable($result, $return)
   
   $output .= "</table>\n";
   
+  $result->free();
+  
   if($return)
   {
     return $output;
@@ -231,6 +237,32 @@ function destroy_session()
   session_destroy();
 }
 
+function utf8_encode_array(array $array)
+{
+  $convertedArray = array();
+  
+  foreach($array as $key => $value)
+  {
+    if(!mb_check_encoding($key, 'UTF-8'))
+    {
+      $key = utf8_encode($key);
+    }
+    
+    if(is_array($value))
+    {
+      $value = utf8_encode_array($value);
+    }
+    else
+    {
+      $value = utf8_encode($value);
+    }
+
+    $convertedArray[$key] = $value;
+  }
+  
+  return $convertedArray;
+} 
+
 function display()
 {
   global $title, $output, $ftp, $notifications, $data;
@@ -248,7 +280,7 @@ function display()
     <script language="JavaScript" src="../core/js/jquery.js"></script>
     <script language="JavaScript" src="script.js"></script>
     <script>
-     var rawdata = <?php echo json_encode($data); ?>;
+     var rawdata = <?php echo json_encode(utf8_encode_array($data)); ?>;
      var sessiontimeout = <?php echo $_SESSION["timeout"] * 1000; ?>;
     </script>    
     <title>RedInfoManager<?php
