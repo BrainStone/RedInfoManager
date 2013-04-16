@@ -18,7 +18,7 @@ table tr:nth-child(1)
 table
 {
   table-layout: fixed;
-  width: 2120px;
+  width: 2095px;
   vertical-align: middle;
   margin-top: 25px;
 }
@@ -31,7 +31,7 @@ td, th
 
 th:nth-child(1)
 {
-  width: 50px;
+  width: 25px;
 }
 
 th:nth-child(2)

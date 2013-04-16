@@ -4,12 +4,12 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.3.6
+  *   v0.4.37
   */
 // Code
 
 session_start();
-register_shutdown_function("display");
+
 
 $time = $_SERVER["REQUEST_TIME"];
 $title = "";
@@ -21,14 +21,23 @@ $ftp = null;
 session_handler();
 check_connection();
 
-switch($_SESSION["state"])
+if(isset($_POST["ajax"]) && ($_POST["ajax"] == "true"))
 {
-  case 0:
-    login_page();
-    break;
-  case 1:
-    display_data();
-    break;
+  ;
+}
+else
+{
+  register_shutdown_function("display");
+
+  switch($_SESSION["state"])
+  {
+    case 0:
+      login_page();
+      break;
+    case 1:
+      display_data();
+      break;
+  }
 }
 
 // Funktionen
@@ -74,7 +83,7 @@ function check_connection()
   {  
     destroy_session();
     
-    $title .= "FTP-Verbindungsfehler";
+    $title = "FTP-Verbindungsfehler";
     $output .= "<h1>Keine Verbindung mit dem FTP-Server möglich!</h1>";
     
     exit();
@@ -85,7 +94,7 @@ function login_page()
 {
   global $output, $ftp, $notifications, $title;
   
-  $title .= "Login";
+  $title = "Login";
   
   if(isset($_POST["action"]) && isset($_POST["username"]) && isset($_POST["password"]) && ($_POST["action"] == "login"))
   {
@@ -115,7 +124,7 @@ function display_data()
 {
   global $output, $title, $data;
   
-  $title .= "Admin-Seite";
+  $title = "Admin-Seite";
   
   if(isset($_POST["action"]) && ($_POST["action"] == "logout"))
   {
@@ -205,9 +214,7 @@ function short_string($string, $length)
     return $string;
   }
   
-  $string = wordwrap($string, $length - 3, "\n", true);
-  
-  return substr($string, 0, strpos($string, "\n")) . "...";
+  return explode("\r\n", wordwrap($string, $length - 3, "\r\n", true))[0] . "...";
 }
 
 function destroy_session()
@@ -242,6 +249,7 @@ function display()
     <script language="JavaScript" src="script.js"></script>
     <script>
      var rawdata = <?php echo json_encode($data); ?>;
+     var sessiontimeout = <?php echo $_SESSION["timeout"] * 1000; ?>;
     </script>    
     <title>RedInfoManager<?php
 
