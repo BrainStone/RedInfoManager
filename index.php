@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.4.42
+  *   v0.4.52
   */
 // Code
 
@@ -17,13 +17,40 @@ $output = "";
 $data = array();
 $notifications = array();
 $ftp = null;
+$mysqli = null;
 
 session_handler();
 check_connection();
 
 if(isset($_POST["ajax"]) && ($_POST["ajax"] == "true"))
 {
-  ;
+  if(isset($_POST["action"]) && ($_POST["action"] == "updateDB"))
+  {
+    if(isset($_POST["row"]) && $_POST["row"] >= 0)
+    {
+      unset($_POST["ajax"]);
+      unset($_POST["action"]);
+      unset($_POST["row"]);
+      
+      connect_to_database();
+      
+      set_defaults();
+      escape_data();
+      
+      if($mysqli->query("UPDATE `redinfomanager` SET " . generate_query() . " WHERE `Station-ID` = '". $_POST["Station-ID"] . "'"))
+      {
+        die("true");
+      }
+      else
+      {
+        die("Failed to connect to MySQL: (" . $mysqli->sqlstate . ") " . $mysqli->error);
+      }
+    }
+    else
+    {
+      die("FAIL");
+    }
+  }
 }
 else
 {
@@ -122,7 +149,7 @@ Password: <input type=\"password\" name=\"password\"><br>
 
 function display_data()
 {
-  global $output, $title, $data;
+  global $output, $title, $data, $mysqli;
   
   $title = "Admin-Seite";
   
@@ -141,12 +168,8 @@ function display_data()
 <input type=\"hidden\" name=\"action\" value=\"logout\">
 </form>
 <br>\n";
-
-  $mysqli = new mysqli("localhost", "root", "", "redinfomanager");
-  if($mysqli->connect_errno)
-  {
-    die("Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error);
-  }
+  
+  connect_to_database();
   
   $output .= printTable($mysqli->query("SELECT `Station-ID` AS `ID`, `Station`, CONCAT(`Kategorie`, ' (', `Unterkategorie`, ')') AS `Kategorie`, CONCAT(`Position-Welt`, ': ', `Position-X`, ', ', `Position-Y`, ', ', `Position-Z`) AS `Position`, `Artikel`, `Stations-Status`, `Info-Status`, CONCAT(`Position-Welt`, ': ', `Warp-X`, ', ', `Warp-Y`, ', ', `Warp-Z`) AS `Warp`, `Quelle`, `Erbauer`, `Info`, `Team-Info` FROM `redinfomanager` WHERE 1"), true);
   
@@ -223,6 +246,79 @@ function short_string($string, $length)
   return explode("\r\n", wordwrap($string, $length - 3, "\r\n", true))[0] . "...";
 }
 
+function set_defaults()
+{
+  if(!isset($_POST["Station-ID"]))
+    $_POST["Station-ID"] = 0;
+  if(!isset($_POST["Station"]))
+    $_POST["Station"] = "";
+  if(!isset($_POST["Kategorie"]))
+    $_POST["Kategorie"] = "Modelle";   
+  if(!isset($_POST["Unterkategorie"]))
+    $_POST["Unterkategorie"] = "Bla";
+  if(!isset($_POST["Position-Welt"]))
+    $_POST["Position-Welt"] = "RedstoneWorld";
+  if(!isset($_POST["Position-X"]))
+    $_POST["Position-X"] = 0;
+  if(!isset($_POST["Position-Y"]))
+    $_POST["Position-Y"] = 0;
+  if(!isset($_POST["Position-Z"]))
+    $_POST["Position-Z"] = 0;
+  if(!isset($_POST["Artikel"]))
+    $_POST["Artikel"] = "";
+  if(!isset($_POST["Stations-Status"]))
+    $_POST["Stations-Status"] = "Geplant";
+  if(!isset($_POST["Info-Status"]))
+    $_POST["Info-Status"] = "unvollständig";
+  if(!isset($_POST["Warp-X"]))
+    $_POST["Warp-X"] = 0;
+  if(!isset($_POST["Warp-Y"]))
+    $_POST["Warp-Y"] = 0;
+  if(!isset($_POST["Warp-Z"]))
+    $_POST["Warp-Z"] = 0;
+  if(!isset($_POST["Quelle"]))
+    $_POST["Quelle"] = "";
+  if(!isset($_POST["Erbauer"]))
+    $_POST["Erbauer"] = "";
+  if(!isset($_POST["Info"]))
+    $_POST["Info"] = "";
+  if(!isset($_POST["Team-Info"]))
+    $_POST["Team-Info"] = "";
+}
+
+function escape_data()
+{
+  global $mysqli;
+  
+  foreach($_POST as $field => $text)
+  {
+    $_POST[$field] = $mysqli->real_escape_string($text);
+  }
+}
+
+function generate_query()
+{
+  $table = array();
+  
+  foreach($_POST as $field => $text)
+  {
+    $table[] = "`$field`='$text'";
+  }
+  
+  return implode(", ", $table);
+}
+
+function connect_to_database()
+{
+  global $mysqli;
+  
+  $mysqli = new mysqli("localhost", "root", "", "redinfomanager");
+  if($mysqli->connect_errno)
+  {
+    die("Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error);
+  }
+}
+
 function destroy_session()
 {
   // Session beenden
@@ -254,7 +350,10 @@ function utf8_encode_array(array $array)
     }
     else
     {
-      $value = utf8_encode($value);
+      if(!mb_check_encoding($value, 'UTF-8'))
+      {
+        $value = utf8_encode($value);
+      }
     }
 
     $convertedArray[$key] = $value;

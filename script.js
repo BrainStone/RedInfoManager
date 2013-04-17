@@ -16,7 +16,8 @@ function onDocumentLoaded()
   
   $.ajaxSetup(
   {
-    type: "POST"
+    type: "POST",
+    dataType: "text"
   });
   
   $(document).ajaxSuccess(ajaxSuccess);
@@ -118,6 +119,7 @@ function finishEdit()
     var tmpData = new cloneObject(rawdata[current_row]);
     tmpData["ajax"] = "true";
     tmpData["row"] = current_row;
+    tmpData["action"] = "updateDB";
     
     $.ajax({
       data: tmpData
@@ -152,7 +154,7 @@ function ajaxSuccess(event, request, settings)
 {
   var tmp_array = unserialize(settings.data);
   
-  if(request.responseHTML == "true")
+  if(request.responseText == "true")
   {
     tmp_data = null;
     
@@ -164,6 +166,8 @@ function ajaxSuccess(event, request, settings)
   }
   else
   {
+    console.log(request.responseText);
+    
     databaseError(tmp_array["row"]);
   }
 }
