@@ -7,10 +7,63 @@ Programm-Name: RedInfoManager
 
 
 - Station-ID				(z.B.: "00001")							String		eine Zeile
+
 - Station 				(z.B.: "Netherwarzenfarm")					String		eine Zeile
+
 - Kategorie 				(z.B.: "Survival-Anwendungen")					Bolean		Multiple Choice
-					<Modelle, Redstone-Basics, Survival-Anwendungen, komplexe Schaltkreise, qualifizierte Spiele, große Recheneinheiten>
+					<Modelle, Redstone-Basics, Survival-Anwendungen, qualifizierte Spiele, Recheneinheiten, Diverses>
+
+-> Modelle: (vollständig)
+ - (1) Blöcke
+ - (2) Iteams
+ - (3) Sonstiges
+
+-> Redstone-Basics: (noch zu überarbeiten)
+- (1) Redstone-Signal
+- (2) Signal-Übertragung
+- (3) Einfache Schaltungen
+- (4) Logikgatter
+- (5) Latches / Flip-Flops
+- (6) Clock
+
+-> Survival-Anwendungen: (aktuell vollständig)
+- (1) Generatoren
+- (2) Farmanlagen
+- (3) Fahrstühle
+- (4) Türen / Tore
+- (5) Beleuchtung / Lichteffekte
+- (6) Adventure-Fallen
+- (7) Schienen / Loren
+- (8) TNT-Maschinen
+- (9) Code-Schlösser
+- (10) Bud-Switch
+- (11) andere Bugs
+- (12) Sonstiges
+
+-> Spiele: (aktuell vollständig)
+- (1) Tic Tac Toe
+- (2) Vier gewinnt
+- (3) Schachmatt
+- (4) Dame
+- (5) Schere, Stein, Papier
+
+-> Recheneinheiten: (noch zu überarbeiten)
+- (1) Rechnen
+- (2) Zähler
+- (3) ROM-Speicher
+- ...
+- ()Sonstiges
+
+-> Diverses: (vollständig)
+- Diverses 1
+
+
+
+
+
+
 - Unterkategorie 			(z.B.: "Farmanlagen")						Bolean		Multiple Choice
+
 - Position (des Nachrichten-Buttons)	(z.B.: "RedstoneWorld" + "-448 64 -672")			String		eine Zeile
 					<RedstoneWorld, BauWorld, Parzellen, Projekte>
 
@@ -24,16 +77,21 @@ Programm-Name: RedInfoManager
 ---------------------------------------------------
 
 - Artikel in RedstoneWiki.net		(immer Webseite)						String		eine Zeile (Hyperlink)
+
 - Status Station											Bolean		Auswahl
 					<Geplant, in Bau, zu Überprüfen, zu Gestalten, Fertig, Verbuggt, Deffekt>
+
 - Status Info												Bolean		Auswahl
 					<unvollständig, zu überprüfen, vollständig>
+
 - Warppunkt vorhanden?			(Warppunkt besteht immer aus der Station-ID)			Bolean		Auswahl
 					<Ja, Nein>
+
 - Warp-Koordinaten											String		eine Zeile
 
 
 - Link der Quelle 			(Webseite oder Videolink)					String		eine Zeile (Hyperlink)
+
 - Name des Erbauers			(Ingame-Name, wie "Robert_LP", auch YouTube-Name im Notfall)	String		eine Zeile
 
 - Fenster mit Zusatz-Inhalt für >Team< 	(Textdatei-Name)						String		Längerer Text

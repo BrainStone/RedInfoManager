@@ -7,21 +7,11 @@ $(document).ready(onDocumentLoaded);
 var index_to_string_index = new Array("", "Station", "", "", "Artikel", "", "", "", "Quelle", "Erbauer", "", "");
 var timeout_refference = null;
 var tmp_data = null;
+var window_active = false;
 
 function onDocumentLoaded()
 {
   registerHandler();
-  
-  meldungsBox();
-  
-  $.ajaxSetup(
-  {
-    type: "POST",
-    dataType: "text"
-  });
-  
-  $(document).ajaxSuccess(ajaxSuccess);
-  $(document).ajaxError(ajaxError);
 }
 
 function registerHandler()
@@ -55,10 +45,17 @@ function registerHandler()
     case 9:
       editFieldBase();
       break;
+    case 2:
+      editCategories();
+      break;
     }
   });
    
   $(document).on("blur", "input.edit", finishEdit);
+  $(document).on("blur", "select.edit", finishEdit2);
+  $(document).on("blur", "select.editu", finishEdit2);
+  
+  $(document).on("change", "select.edit", selectChange);
     
   $(document).on("submit", "form.edit", function(event)
   {
@@ -70,6 +67,26 @@ function registerHandler()
   {
     event.preventDefault();
   });
+  
+  $([window, document]).focusin(function()
+  {
+    window_active = true;
+    
+    meldungsBox();
+  })
+  .focusout(function()
+  {
+    window_active = false;
+  });
+      
+  $.ajaxSetup(
+  {
+    type: "POST",
+    dataType: "text"
+  });
+  
+  $(document).ajaxSuccess(ajaxSuccess);
+  $(document).ajaxError(ajaxError);
 }
 
 function startSessionTimeOut()
@@ -85,17 +102,36 @@ function stopSessionTimeOut()
 
 function meldungsBox()
 {
-  $("div#meldung").fadeOut(2000, function()
+  if(window_active)
   {
-    $("div#meldung").text("");
-  });
+    $("div#meldung").fadeOut(2000, function()
+    {
+      $("div#meldung").text("");
+    });
+  }
 }
 
 function editFieldBase()
 {
-  current_object.innerHTML = "<form class=\"edit\"><span><input class=\"edit\" value=\"" + rawdata[current_row][index_to_string_index[current_column]] + "\"></span></form>";
+  current_object.innerHTML = "<form class=\"edit\"><input class=\"edit\" value=\"" + rawdata[current_row][index_to_string_index[current_column]] + "\"></form>";
   $("input.edit").focus();
   $("input.edit").setCursorPosition(rawdata[current_row][index_to_string_index[current_column]].length);
+}
+
+function editCategories()
+{
+  var options = "";
+  var kategorie = rawdata[current_row]["Kategorie"];
+  
+  for(var i in categories)
+  {
+    options += "<option" + ((i == kategorie) ? " selected" : "") + ">" + i + "</option>";
+  }
+  
+  current_object.innerHTML = "<form class=\"edit\"><select class=\"edit\">" + options + "</select><select class=\"editu\"></select></form>";
+  $("select.edit").focus();
+  
+  selectChange();
 }
 
 function finishEdit()
@@ -129,6 +165,55 @@ function finishEdit()
     current_column = -1;
     current_object = null;
   }
+}
+
+function finishEdit2()
+{
+  if((current_object != null) && !($("select.edit:focus").length || $("select.editu:focus").length || $("form.edit:focus").length))
+  {
+    tmp_data = new cloneObject(rawdata[current_row]);
+    
+    switch(current_column)
+    {
+    case 2:
+      break;
+    }
+    
+    updateRow(current_row);
+    
+    var tmpData = new cloneObject(rawdata[current_row]);
+    tmpData["ajax"] = "true";
+    tmpData["row"] = current_row;
+    tmpData["action"] = "updateDB";
+    
+    $.ajax({
+      data: tmpData
+    });
+    
+    current_row = -1;
+    current_column = -1;
+    current_object = null;
+  }
+}
+
+function selectChange()
+{
+  console.log("Called");
+  
+  var options = "";
+  var length = categories.length;
+  var kategorie = $("select.edit").val();
+  var unterkategorie = rawdata[current_row]["Unterkategorie"];
+  var value;
+  
+  for(var i in categories[kategorie])
+  {
+    value = categories[kategorie][i];
+    
+    options += "<option" + ((value == unterkategorie) ? " selected" : "") + ">" + value + "</option>";
+  }
+  
+  $("select.editu")[0].innerHTML = options;
 }
 
 function updateRow(row)
