@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.5.16
+  *   v0.5.21
   */
 // Code
 
@@ -183,7 +183,7 @@ function display_data()
   
   $result->free();
   
-  $result = $mysqli->query("SELECT * FROM `kategorien`");
+  $result = $mysqli->query("SELECT `Kategorie`, GROUP_CONCAT(`Unterkategorie` SEPARATOR '\r\n') AS `Unterkategorien` FROM `kategorien` GROUP BY `Kategorie`");
   
   while($r = $result->fetch_assoc())
   {

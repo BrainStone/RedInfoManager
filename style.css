@@ -18,7 +18,7 @@ table tr:nth-child(1)
 table
 {
   table-layout: fixed;
-  width: 2095px;
+  width: 2200px;
   vertical-align: middle;
   margin-top: 25px;
 }
@@ -37,6 +37,11 @@ th:nth-child(1)
 th:nth-child(2)
 {
   width: 150px;
+}
+
+th:nth-child(3)
+{
+  width: 305px;
 }
 
 th:nth-child(4), th:nth-child(8)
@@ -90,4 +95,10 @@ div#meldung
   font-size: 20pt;
   display: table-cell;
   padding: 20px 0px;
+}
+
+select
+{
+  font-size: 8.5pt;
+  width: 50%;
 }
