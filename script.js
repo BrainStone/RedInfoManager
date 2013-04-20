@@ -3,7 +3,7 @@
 var current_row = -1;
 var current_column = -1;
 var current_object = null;
-var index_to_string_index = new Array("", "Station", "", "", "Artikel", "", "", "", "Quelle", "Erbauer", "", "");
+var index_to_string_index = new Array("", "Station", "", "", "Artikel", "", "", "", "Quelle", "Erbauer", "Datei");
 var timeout_refference = null;
 var tmp_data = null;
 var window_active = true;
@@ -54,6 +54,7 @@ function registerHandler()
     case 4:
     case 8:
     case 9:
+    case 10:
       editFieldBase();
       break;
     case 2:
@@ -64,7 +65,7 @@ function registerHandler()
    
   $(document).on("blur", "input.edit, select.edit", function()
   {
-    $(document).one("click", finishEdit);
+    $(document).one("click", finishEditBlur);
   });
   
   $(document).on("change", "select.edit#\\#1", selectChange);
@@ -141,9 +142,15 @@ function editCategories()
   selectChange();
 }
 
+function finishEditBlur()
+{
+  if(!($("select.edit:focus").length || $("input.edit:focus").length || $("form.edit:focus").length))
+    finishEdit();
+}
+
 function finishEdit()
 {
-  if((current_object != null) && !($("select.edit:focus").length || $("input.edit:focus").length || $("form.edit:focus").length))
+  if(current_object != null)
   {
     tmp_data = new cloneObject(rawdata[current_row]);
     
@@ -153,6 +160,7 @@ function finishEdit()
     case 4:
     case 8:
     case 9:
+    case 10:
       rawdata[current_row][index_to_string_index[current_column]] = $("input.edit").val();
       break;
     case 2:
@@ -213,8 +221,7 @@ function updateRow(row)
   $(bstr + "7").text(data["Position-Welt"] + ": " + data["Warp-X"] + ", " + data["Warp-Y"] + ", " + data["Warp-Z"]);
   $(bstr + "8").text(data["Quelle"]);
   $(bstr + "9").text(data["Erbauer"]);
-  $(bstr + "10").text(shortString(data["Info"], 50));
-  $(bstr + "11").text(shortString(data["Team-Info"], 50));
+  $(bstr + "10").text(data["Datei"]);
 }
 
 function ajaxSuccess(event, request, settings)

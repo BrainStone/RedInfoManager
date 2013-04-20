@@ -5,7 +5,7 @@ header("Content-Type: text/html;charset=utf-8");
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.5.38
+  *   v0.6.5
   */
 // Code
 
@@ -170,7 +170,7 @@ function display_data()
   
   connect_to_database();
   
-  $output .= printTable($mysqli->query("SELECT `Station-ID` AS `ID`, `Station`, CONCAT(`Kategorie`, ' (', `Unterkategorie`, ')') AS `Kategorie`, CONCAT(`Position-Welt`, ': ', `Position-X`, ', ', `Position-Y`, ', ', `Position-Z`) AS `Position`, `Artikel`, `Stations-Status`, `Info-Status`, CONCAT(`Position-Welt`, ': ', `Warp-X`, ', ', `Warp-Y`, ', ', `Warp-Z`) AS `Warp`, `Quelle`, `Erbauer`, `Info`, `Team-Info` FROM `redinfomanager` ORDER BY `Station-ID`"), true);
+  $output .= printTable($mysqli->query("SELECT `Station-ID` AS `ID`, `Station`, CONCAT(`Kategorie`, ' (', `Unterkategorie`, ')') AS `Kategorie`, CONCAT(`Position-Welt`, ': ', `Position-X`, ', ', `Position-Y`, ', ', `Position-Z`) AS `Position`, `Artikel`, `Stations-Status`, `Info-Status`, CONCAT(`Position-Welt`, ': ', `Warp-X`, ', ', `Warp-Y`, ', ', `Warp-Z`) AS `Warp`, `Quelle`, `Erbauer`, `Datei` FROM `redinfomanager` ORDER BY `Station-ID`"), true);
   
   $result = $mysqli->query("SELECT * FROM `redinfomanager`");
   
@@ -216,11 +216,6 @@ function printTable($result, $return)
     
     foreach($row as $field => $value)
     {     
-      if(strpos($field, "Info") !== false)
-      {
-        $value = short_string($value, 50);
-      }
-      
       $output .= "<td id=\"#$i#$j\">$value</td>";
       
       $j++;
@@ -287,10 +282,8 @@ function set_defaults()
     $_POST["Quelle"] = "";
   if(!isset($_POST["Erbauer"]))
     $_POST["Erbauer"] = "";
-  if(!isset($_POST["Info"]))
-    $_POST["Info"] = "";
-  if(!isset($_POST["Team-Info"]))
-    $_POST["Team-Info"] = "";
+  if(!isset($_POST["Datei"]))
+    $_POST["Datei"] = "";
 }
 
 function generate_query()

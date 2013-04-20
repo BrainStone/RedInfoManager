@@ -18,7 +18,7 @@ table tr:nth-child(1)
 table
 {
   table-layout: fixed;
-  width: 2200px;
+  width: 1800px;
   vertical-align: middle;
   margin-top: 25px;
 }
@@ -64,9 +64,9 @@ th:nth-child(10)
   width: 150px;
 }
 
-th:nth-child(11), th:nth-child(12)
+th:nth-child(11)
 {
-  width: 300px;
+  width: 100px;
 }
 
 input
