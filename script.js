@@ -3,11 +3,22 @@
 var current_row = -1;
 var current_column = -1;
 var current_object = null;
-$(document).ready(onDocumentLoaded);
 var index_to_string_index = new Array("", "Station", "", "", "Artikel", "", "", "", "Quelle", "Erbauer", "", "");
 var timeout_refference = null;
 var tmp_data = null;
-var window_active = false;
+var window_active = true;
+
+$(document).ready(onDocumentLoaded);
+$([window]).focusin(function()
+{
+  window_active = true;
+  
+  meldungsBox();
+})
+.focusout(function()
+{
+  window_active = false;
+});
 
 function onDocumentLoaded()
 {
@@ -68,17 +79,6 @@ function registerHandler()
   {
     event.preventDefault();
   });
-  
-  $([window, document]).focusin(function()
-  {
-    window_active = true;
-    
-    meldungsBox();
-  })
-  .focusout(function()
-  {
-    window_active = false;
-  });
       
   $.ajaxSetup(
   {
@@ -99,6 +99,12 @@ function stopSessionTimeOut()
 {
   clearTimeout(timeout_refference);
   timeout_refference = null;
+}
+
+function restartSessionTimeOut()
+{
+  stopSessionTimeOut();
+  startSessionTimeOut();
 }
 
 function meldungsBox()
@@ -166,6 +172,8 @@ function finishEdit()
       data: tmpData
     });
     
+    restartSessionTimeOut();
+    
     current_row = -1;
     current_column = -1;
     current_object = null;
@@ -174,8 +182,6 @@ function finishEdit()
 
 function selectChange()
 {
-  console.log("Called");
-  
   var options = "";
   var length = categories.length;
   var kategorie = $("select.edit#\\#1").val();
@@ -240,8 +246,6 @@ function ajaxError(event, request, settings)
 
 function databaseError(row)
 {
-  console.log(tmp_data);
-  
   rawdata[row] = new cloneObject(tmp_data);
   tmp_data = null;
   

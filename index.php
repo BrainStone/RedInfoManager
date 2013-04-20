@@ -1,15 +1,15 @@
 <?php
+header("Content-Type: text/html;charset=utf-8");
 /**
   * Das hier ist die Haupdatei des RedInfoManager's
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.5.24
+  *   v0.5.38
   */
 // Code
 
 session_start();
-
 
 $time = $_SERVER["REQUEST_TIME"];
 $title = "";
@@ -33,18 +33,16 @@ if(isset($_POST["ajax"]) && ($_POST["ajax"] == "true"))
       unset($_POST["action"]);
       unset($_POST["row"]);
       
-      connect_to_database();
-      
+      connect_to_database();     
       set_defaults();
-      escape_data();
       
-      if($mysqli->query("UPDATE `redinfomanager` SET " . generate_query() . " WHERE `Station-ID` = '". $_POST["Station-ID"] . "'"))
+      if($mysqli->query("UPDATE `redinfomanager` SET " . generate_query() . " WHERE `Station-ID` = ". $_POST["Station-ID"]))
       {
         die("true");
       }
       else
       {
-        die("Failed to connect to MySQL: (" . $mysqli->sqlstate . ") " . $mysqli->error);
+        die("Error in query: (" . $mysqli->sqlstate . ") " . $mysqli->error);
       }
     }
     else
@@ -172,7 +170,7 @@ function display_data()
   
   connect_to_database();
   
-  $output .= printTable($mysqli->query("SELECT `Station-ID` AS `ID`, `Station`, CONCAT(`Kategorie`, ' (', `Unterkategorie`, ')') AS `Kategorie`, CONCAT(`Position-Welt`, ': ', `Position-X`, ', ', `Position-Y`, ', ', `Position-Z`) AS `Position`, `Artikel`, `Stations-Status`, `Info-Status`, CONCAT(`Position-Welt`, ': ', `Warp-X`, ', ', `Warp-Y`, ', ', `Warp-Z`) AS `Warp`, `Quelle`, `Erbauer`, `Info`, `Team-Info` FROM `redinfomanager` WHERE 1"), true);
+  $output .= printTable($mysqli->query("SELECT `Station-ID` AS `ID`, `Station`, CONCAT(`Kategorie`, ' (', `Unterkategorie`, ')') AS `Kategorie`, CONCAT(`Position-Welt`, ': ', `Position-X`, ', ', `Position-Y`, ', ', `Position-Z`) AS `Position`, `Artikel`, `Stations-Status`, `Info-Status`, CONCAT(`Position-Welt`, ': ', `Warp-X`, ', ', `Warp-Y`, ', ', `Warp-Z`) AS `Warp`, `Quelle`, `Erbauer`, `Info`, `Team-Info` FROM `redinfomanager` ORDER BY `Station-ID`"), true);
   
   $result = $mysqli->query("SELECT * FROM `redinfomanager`");
   
@@ -183,7 +181,7 @@ function display_data()
   
   $result->free();
   
-  $result = $mysqli->query("SELECT `Kategorie`, GROUP_CONCAT(`Unterkategorie` SEPARATOR '\r\n') AS `Unterkategorien` FROM `kategorien` GROUP BY `Kategorie`");
+  $result = $mysqli->query("SELECT `Kategorie`, GROUP_CONCAT(`Unterkategorie` SEPARATOR '\r\n') AS `Unterkategorien` FROM `kategorien` GROUP BY `Kategorie` ORDER BY `Kategorie`, `Unterkategorie`");
   
   while($r = $result->fetch_assoc())
   {
@@ -264,7 +262,7 @@ function set_defaults()
   if(!isset($_POST["Kategorie"]))
     $_POST["Kategorie"] = "Modelle";   
   if(!isset($_POST["Unterkategorie"]))
-    $_POST["Unterkategorie"] = "Bla";
+    $_POST["Unterkategorie"] = "Block";
   if(!isset($_POST["Position-Welt"]))
     $_POST["Position-Welt"] = "RedstoneWorld";
   if(!isset($_POST["Position-X"]))
@@ -295,23 +293,22 @@ function set_defaults()
     $_POST["Team-Info"] = "";
 }
 
-function escape_data()
+function generate_query()
 {
   global $mysqli;
   
-  foreach($_POST as $field => $text)
-  {
-    $_POST[$field] = $mysqli->real_escape_string($text);
-  }
-}
-
-function generate_query()
-{
   $table = array();
   
   foreach($_POST as $field => $text)
   {
-    $table[] = "`$field`='$text'";
+    if(preg_match("/^-?[0-9]+$/", $text))
+    {
+      $table[] = "`$field`=" . $mysqli->real_escape_string($text);
+    }
+    else
+    {
+      $table[] = "`$field`='" . $mysqli->real_escape_string($text) . "'";
+    }
   }
   
   return implode(", ", $table);
@@ -326,6 +323,9 @@ function connect_to_database()
   {
     die("Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error);
   }
+  
+  $mysqli->set_charset("utf8");
+  $mysqli->query("SET NAMES utf8");
 }
 
 function destroy_session()
