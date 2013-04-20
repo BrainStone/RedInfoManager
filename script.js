@@ -51,11 +51,12 @@ function registerHandler()
     }
   });
    
-  $(document).on("blur", "input.edit", finishEdit);
-  $(document).on("blur", "select.edit", finishEdit2);
-  $(document).on("blur", "select.editu", finishEdit2);
+  $(document).on("blur", "input.edit, select.edit", function()
+  {
+    $(document).one("click", finishEdit);
+  });
   
-  $(document).on("change", "select.edit", selectChange);
+  $(document).on("change", "select.edit#\\#1", selectChange);
     
   $(document).on("submit", "form.edit", function(event)
   {
@@ -128,15 +129,15 @@ function editCategories()
     options += "<option" + ((i == kategorie) ? " selected" : "") + ">" + i + "</option>";
   }
   
-  current_object.innerHTML = "<form class=\"edit\"><select class=\"edit\">" + options + "</select><select class=\"editu\"></select></form>";
-  $("select.edit").focus();
+  current_object.innerHTML = "<form class=\"edit\"><select class=\"edit\" id =\"#1\">" + options + "</select><select class=\"edit\" id =\"#2\"></select></form>";
+  $("select.edit#\\#1").focus();
   
   selectChange();
 }
 
 function finishEdit()
 {
-  if(current_object != null)
+  if((current_object != null) && !($("select.edit:focus").length || $("input.edit:focus").length || $("form.edit:focus").length))
   {
     tmp_data = new cloneObject(rawdata[current_row]);
     
@@ -148,34 +149,9 @@ function finishEdit()
     case 9:
       rawdata[current_row][index_to_string_index[current_column]] = $("input.edit").val();
       break;
-    }
-    
-    updateRow(current_row);
-    
-    var tmpData = new cloneObject(rawdata[current_row]);
-    tmpData["ajax"] = "true";
-    tmpData["row"] = current_row;
-    tmpData["action"] = "updateDB";
-    
-    $.ajax({
-      data: tmpData
-    });
-    
-    current_row = -1;
-    current_column = -1;
-    current_object = null;
-  }
-}
-
-function finishEdit2()
-{
-  if((current_object != null) && !($("select.edit:focus").length || $("select.editu:focus").length || $("form.edit:focus").length))
-  {
-    tmp_data = new cloneObject(rawdata[current_row]);
-    
-    switch(current_column)
-    {
     case 2:
+      rawdata[current_row]["Kategorie"] = $("select.edit#\\#1").val();
+      rawdata[current_row]["Unterkategorie"] = $("select.edit#\\#2").val();
       break;
     }
     
@@ -202,7 +178,7 @@ function selectChange()
   
   var options = "";
   var length = categories.length;
-  var kategorie = $("select.edit").val();
+  var kategorie = $("select.edit#\\#1").val();
   var unterkategorie = rawdata[current_row]["Unterkategorie"];
   var value;
   
@@ -213,7 +189,7 @@ function selectChange()
     options += "<option" + ((value == unterkategorie) ? " selected" : "") + ">" + value + "</option>";
   }
   
-  $("select.editu")[0].innerHTML = options;
+  $("select.edit#\\#2").html(options);
 }
 
 function updateRow(row)
