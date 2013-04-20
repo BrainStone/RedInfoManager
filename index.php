@@ -5,7 +5,7 @@ header("Content-Type: text/html;charset=utf-8");
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.6.5
+  *   v0.6.17
   */
 // Code
 
@@ -382,7 +382,7 @@ function display()
     <script language="JavaScript" src="script.js"></script>
     <script>
      var rawdata = <?php echo json_encode(utf8_encode_array($data)); ?>;
-     var sessiontimeout = <?php echo $_SESSION["timeout"] * 1000; ?>;
+     var sessiontimeout = <?php echo ((isset($_SESSION["timeout"]) ? $_SESSION["timeout"] : -1) * 1000); ?>;
      var categories = <?php echo json_encode(utf8_encode_array($kategorien)); ?>;
     </script>    
     <title>RedInfoManager<?php

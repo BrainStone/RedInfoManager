@@ -6,23 +6,20 @@ var current_object = null;
 var index_to_string_index = new Array("", "Station", "", "", "Artikel", "", "", "", "Quelle", "Erbauer", "Datei");
 var timeout_refference = null;
 var tmp_data = null;
-var window_active = true;
 
 $(document).ready(onDocumentLoaded);
-$([window]).focusin(function()
-{
-  window_active = true;
-  
-  meldungsBox();
-})
-.focusout(function()
-{
-  window_active = false;
-});
 
 function onDocumentLoaded()
 {
+  if(!$("div#meldung").length)
+  {
+    $(document.body).append($("<div id=\"meldung\">"));
+    $("div#meldung").fadeOut(0);
+  }
+  
   registerHandler();
+  
+  meldungsBox();
 }
 
 function registerHandler()
@@ -34,6 +31,18 @@ function registerHandler()
   
   $(document).on("click", "td", function()
   {
+    if(tmp_data != null)
+    {
+      $("div#meldung").append("<p>Einen Moment bitte!</p>");
+      $("div#meldung").fadeIn(0);
+      meldungsBox();
+      
+      return;
+    }
+    
+    if((current_row) != -1 || (current_column != -1) || (current_object != null))
+      return;
+    
     var id = $(this)[0].getAttribute("id").substr(1).split("#");
     
     var tmp_row = parseInt(id[0]);
@@ -65,6 +74,10 @@ function registerHandler()
    
   $(document).on("blur", "input.edit, select.edit", function()
   {
+    current_row_old = current_row;
+    current_column_old = current_column;
+    current_object_old = current_object;
+    
     $(document).one("click", finishEditBlur);
   });
   
@@ -110,12 +123,16 @@ function restartSessionTimeOut()
 
 function meldungsBox()
 {
-  if(window_active)
+  if(document.hasFocus())
   {
     $("div#meldung").fadeOut(2000, function()
     {
       $("div#meldung").text("");
     });
+  }
+  else
+  {
+    $(document).one("focus", meldungsBox);
   }
 }
 
@@ -144,8 +161,12 @@ function editCategories()
 
 function finishEditBlur()
 {
-  if(!($("select.edit:focus").length || $("input.edit:focus").length || $("form.edit:focus").length))
+  var td = "td#\\#" + current_row_old + "\\#" + current_column_old + " ";
+  
+  if(!($(td + "form.edit select.edit:focus").length || $(td + "form.edit input.edit:focus").length))
+  {
     finishEdit();
+  }
 }
 
 function finishEdit()
@@ -255,11 +276,6 @@ function databaseError(row)
 {
   rawdata[row] = new cloneObject(tmp_data);
   tmp_data = null;
-  
-  if(!$("div#meldung").length)
-  {
-    $(document.body).append($("<div id=\"meldung\">"));
-  }
   
   $("div#meldung").append("<p>Datenbankfehler!</p>")
   $("div#meldung").fadeIn(0);
