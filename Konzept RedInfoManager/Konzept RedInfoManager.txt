@@ -18,7 +18,7 @@ Programm-Name: RedInfoManager
  - (2) Iteams
  - (3) Sonstiges
 
--> Redstone-Basics: (noch zu überarbeiten)
+-> Redstone-Basics: (aktuell vollständig)
 - (1) Redstone-Signal
 - (2) Signal-Übertragung
 - (3) Einfache Schaltungen
@@ -47,16 +47,18 @@ Programm-Name: RedInfoManager
 - (4) Dame
 - (5) Schere, Stein, Papier
 
--> Recheneinheiten: (noch zu überarbeiten)
-- (1) Rechnen
-- (2) Zähler
-- (3) ROM-Speicher
-- ...
-- ()Sonstiges
+-> Recheneinheiten: (vollständig)
+- (1) CPU
+- (2) GPU
+- (3) ALU
+- (4) RAM
+- (5) Taschenrechner
+- (6) Sonstiges
 
 -> Diverses: (vollständig)
 - Diverses 1
-
+- Diverses 2
+- Diverses 3
 
 
 
