@@ -114,3 +114,6 @@ Programm-Name: RedInfoManager
 - Liste wann welche Text-Datei geändert wurde mit Datum
 - Möglichkeit schnell eine neue Datei anzulegen inkl. Textdatei (standartmäßig mit UNICODE-Erlaubnis) + Informationenverwaltung
 - 2 Ansichtsmöglichkeiten: Jeweils mit Code- & Vorschau-Ansicht. Schriftfarbe/ ~art in Code-Ansicht anzeigen, in Vorschau-Ansicht umwandeln.
+- Anzeige im Texteditor mit dem man die maximale Zeile vor dem Umbruch im Chat erkennt
+	Info: Nach 53 Zeichen Text bricht der Chat normalerweise in die nächste Zeile um (siehe Screenshot: Chat-Zeichenlänge)
+	Alles was im Texteditor nach der 53. Platzhalter geschrieben wurde wird automatisch schon im Editor umgebrochen!! (Für Admin-Memos gibt es das "Fenster mit Zusatz-Inhalten")
