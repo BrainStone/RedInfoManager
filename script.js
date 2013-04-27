@@ -107,6 +107,11 @@ function registerHandler()
   $(document).on("submit", "form.search", function(event)
   {
     event.preventDefault();
+    search();
+  });
+  $(document).on("keyup", "form.search", function()
+  {
+    search();
   });
       
   $.ajaxSetup(
@@ -366,6 +371,36 @@ function databaseError(row)
   meldungsBox();
   
   updateRow(row);
+}
+
+function search()
+{
+  var rowcount = rawdata.length;
+  var ID = $("input.search#search1").val();
+  var Station = $("input.search#search2").val().toLowerCase();
+  var Kategorie = $("input.search#search3").val().toLowerCase();
+  var Unterkategorie = $("input.search#search4").val().toLowerCase();
+  var Button = $("input.search#search5").val().toLowerCase();
+  var obj_str;
+  
+  for(var i = 0; i < rowcount; i++)
+  {
+    obj_str = "tr#\\#" + i;
+    
+    if((rawdata[i]["Station-ID"].indexOf(ID) != -1) &&
+       (rawdata[i]["Station"].toLowerCase().indexOf(Station) != -1) &&
+       (rawdata[i]["Kategorie"].toLowerCase().indexOf(Kategorie) != -1) &&
+       (rawdata[i]["Unterkategorie"].toLowerCase().indexOf(Unterkategorie) != -1) &&
+       ($("td#\\#" + i + "#7").text().toLowerCase().indexOf(Button) != -1))
+    {
+      $(obj_str + ":hidden").show(300);
+    }
+    else
+    {
+      $(obj_str + ":visible").hide(300);
+    }
+    
+  }
 }
 
 // Utility
