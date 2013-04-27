@@ -69,9 +69,14 @@ th:nth-child(11)
   width: 100px;
 }
 
-form.search
+form.search, form.logout
 {
   position: fixed;
+}
+
+form.search input
+{
+  width: 10%;
 }
 
 input.edit

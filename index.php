@@ -5,7 +5,7 @@ header("Content-Type: text/html;charset=utf-8");
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.7.14
+  *   v0.7.16
   */
 // Code
 
@@ -168,8 +168,11 @@ function display_data()
 "<form class=\"search\">
 Station-ID: <input id=\"search1\" class=\"search\" name=\"Station-ID\">&nbsp;&nbsp;&nbsp;&nbsp;
 Station: <input id=\"search2\" class=\"search\" name=\"Station\">&nbsp;&nbsp;&nbsp;&nbsp;
+Kategorie: <input id=\"search3\" class=\"search\" name=\"Kategorie\">&nbsp;&nbsp;&nbsp;&nbsp;
+Unterkategorie: <input id=\"search4\" class=\"search\" name=\"Unterkategorie\">&nbsp;&nbsp;&nbsp;&nbsp;
+Button-Position: <input id=\"search5\" class=\"search\" name=\"Button-Position\">
 </form>
-<form method=\"POST\" class=\"search\" style=\"right: 5px;\">
+<form method=\"POST\" class=\"logout\" style=\"right: 5px;\">
 <input type=\"submit\" value=\"Abmelden\">
 <input type=\"hidden\" name=\"action\" value=\"logout\">
 </form>
