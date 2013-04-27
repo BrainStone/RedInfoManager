@@ -391,7 +391,7 @@ function search()
        (rawdata[i]["Station"].toLowerCase().indexOf(Station) != -1) &&
        (rawdata[i]["Kategorie"].toLowerCase().indexOf(Kategorie) != -1) &&
        (rawdata[i]["Unterkategorie"].toLowerCase().indexOf(Unterkategorie) != -1) &&
-       ($("td#\\#" + i + "#7").text().toLowerCase().indexOf(Button) != -1))
+       ($("td#\\#" + i + "\\#7").text().toLowerCase().indexOf(Button) != -1))
     {
       $(obj_str + ":hidden").show(300);
     }

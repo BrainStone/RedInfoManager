@@ -5,7 +5,7 @@ header("Content-Type: text/html;charset=utf-8");
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.7.23
+  *   v0.7.24
   */
 // Code
 
