@@ -20,7 +20,7 @@ table
   table-layout: fixed;
   width: 1800px;
   vertical-align: middle;
-  margin-top: 25px;
+  margin-top: 10px;
 }
 
 td, th
@@ -100,5 +100,20 @@ div#meldung
 select
 {
   font-size: 8.5pt;
+  width: 100%;
+}
+
+select#\#1, select#\#2
+{
   width: 50%;
+}
+
+input, select
+{
+  font-family: monospace;
+}
+
+input[value="Abmelden"], input[value="Anmelden"]
+{
+  font-family: MS Shell Dlg;
 }

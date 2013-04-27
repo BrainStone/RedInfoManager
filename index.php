@@ -5,7 +5,7 @@ header("Content-Type: text/html;charset=utf-8");
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.6.17
+  *   v0.6.38
   */
 // Code
 
@@ -16,6 +16,8 @@ $title = "";
 $output = "";
 $data = array();
 $kategorien = array();
+$stationsstatus = array();
+$infostatus = array();
 $notifications = array();
 $ftp = null;
 $mysqli = null;
@@ -148,7 +150,7 @@ Password: <input type=\"password\" name=\"password\"><br>
 
 function display_data()
 {
-  global $output, $title, $data, $mysqli, $kategorien;
+  global $output, $title, $data, $mysqli, $kategorien, $stationsstatus, $infostatus;
   
   $title = "Admin-Seite";
   
@@ -186,6 +188,24 @@ function display_data()
   while($r = $result->fetch_assoc())
   {
     $kategorien[$r["Kategorie"]] = explode("\r\n", $r["Unterkategorien"]);
+  }
+  
+  $result->free();
+  
+  $result = $mysqli->query("SELECT * FROM `Stations-Status`");
+  
+  while($r = $result->fetch_assoc())
+  {
+    $stationsstatus[] = $r["Status"];
+  }
+  
+  $result->free();
+  
+  $result = $mysqli->query("SELECT * FROM `Info-Status`");
+  
+  while($r = $result->fetch_assoc())
+  {
+    $infostatus[] = $r["Status"];
   }
   
   $result->free();
@@ -366,7 +386,7 @@ function utf8_encode_array(array $array)
 
 function display()
 {
-  global $title, $output, $ftp, $notifications, $data, $kategorien;
+  global $title, $output, $ftp, $notifications, $data, $kategorien, $stationsstatus, $infostatus;
   
 ?>
 <!DOCTYPE HTML>
@@ -384,6 +404,8 @@ function display()
      var rawdata = <?php echo json_encode(utf8_encode_array($data)); ?>;
      var sessiontimeout = <?php echo ((isset($_SESSION["timeout"]) ? $_SESSION["timeout"] : -1) * 1000); ?>;
      var categories = <?php echo json_encode(utf8_encode_array($kategorien)); ?>;
+     var stationstatus = <?php echo json_encode(utf8_encode_array($stationsstatus)); ?>;
+     var infostatus = <?php echo json_encode(utf8_encode_array($infostatus)); ?>;
     </script>    
     <title>RedInfoManager<?php
 

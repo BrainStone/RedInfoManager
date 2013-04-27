@@ -69,6 +69,17 @@ function registerHandler()
     case 2:
       editCategories();
       break;
+    case 5:
+      editStationStatus();
+      break;
+    case 6:
+      editInfoStatus();
+      break;
+    default:
+      current_row = -1;
+      current_column = -1;
+      current_object = null;
+      break;
     }
   });
    
@@ -159,6 +170,34 @@ function editCategories()
   selectChange();
 }
 
+function editStationStatus()
+{
+  var options = "";
+  var status = rawdata[current_row]["Stations-Status"];
+  
+  for(var i in stationstatus)
+  {
+    options += "<option" + ((stationstatus[i] == status) ? " selected" : "") + ">" + stationstatus[i] + "</option>";
+  }
+  
+  current_object.innerHTML = "<form class=\"edit\"><select class=\"edit\">" + options + "</select></form>";
+  $("select.edit").focus();
+}
+
+function editInfoStatus()
+{
+  var options = "";
+  var status = rawdata[current_row]["Info-Status"];
+  
+  for(var i in infostatus)
+  {
+    options += "<option" + ((infostatus[i] == status) ? " selected" : "") + ">" + infostatus[i] + "</option>";
+  }
+  
+  current_object.innerHTML = "<form class=\"edit\"><select class=\"edit\">" + options + "</select></form>";
+  $("select.edit").focus();
+}
+
 function finishEditBlur()
 {
   var td = "td#\\#" + current_row_old + "\\#" + current_column_old + " ";
@@ -187,6 +226,12 @@ function finishEdit()
     case 2:
       rawdata[current_row]["Kategorie"] = $("select.edit#\\#1").val();
       rawdata[current_row]["Unterkategorie"] = $("select.edit#\\#2").val();
+      break;
+    case 5:
+      rawdata[current_row]["Stations-Status"] = $("select.edit").val();
+      break;
+    case 6:
+      rawdata[current_row]["Info-Status"] = $("select.edit").val();
       break;
     }
     
