@@ -69,6 +69,10 @@ function registerHandler()
     case 2:
       editCategories();
       break;
+    case 3:
+    case 7:
+      editCoordinates();
+      break;
     case 5:
       editStationStatus();
       break;
@@ -170,6 +174,32 @@ function editCategories()
   selectChange();
 }
 
+function editCoordinates()
+{
+  var options = "";
+  
+  if(current_column == 3)
+  {
+    options = "<select class=\"edit\" id =\"#0\">";
+    var world = rawdata[current_row]["Position-Welt"];
+    
+    for(var i in worlds)
+    {
+      options += "<option" + ((worlds[i] == world) ? " selected" : "") + ">" + worlds[i] + "</option>";
+    }
+    
+    options += "</select>";
+  }
+  
+  var prefix = (current_column == 3) ? "Position-" : "Warp-";
+  
+  current_object.innerHTML = "<form class=\"edit\">" + options + "<input class=\"edit\" id=\"#1\" value=\"" + rawdata[current_row][prefix + "X"] + "\"><input class=\"edit\" id=\"#2\" value=\"" + rawdata[current_row][prefix + "Y"] + "\"><input class=\"edit\" id=\"#3\" value=\"" + rawdata[current_row][prefix + "Z"] + "\"></form>";
+  if(current_column == 3)
+    $("select.edit#\\#0").focus();
+  else
+    $("input.edit#\\#1").focus();
+}
+
 function editStationStatus()
 {
   var options = "";
@@ -226,6 +256,15 @@ function finishEdit()
     case 2:
       rawdata[current_row]["Kategorie"] = $("select.edit#\\#1").val();
       rawdata[current_row]["Unterkategorie"] = $("select.edit#\\#2").val();
+      break;
+    case 3:
+      rawdata[current_row]["Position-Welt"] = $("select.edit#\\#0").val();
+    case 7:
+      var prefix = (current_column == 3) ? "Position-" : "Warp-";
+      
+      rawdata[current_row][prefix + "X"] = $("input.edit#\\#1").val();
+      rawdata[current_row][prefix + "Y"] = $("input.edit#\\#2").val();
+      rawdata[current_row][prefix + "Z"] = $("input.edit#\\#3").val();
       break;
     case 5:
       rawdata[current_row]["Stations-Status"] = $("select.edit").val();

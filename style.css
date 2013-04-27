@@ -69,7 +69,7 @@ th:nth-child(11)
   width: 100px;
 }
 
-input
+form.search
 {
   position: fixed;
 }
@@ -78,7 +78,7 @@ input.edit
 {
   margin-right: 5px;
   width: 95%;
-  position: static;
+  font-size: 95%;
 }
 
 div#meldung
@@ -116,4 +116,15 @@ input, select
 input[value="Abmelden"], input[value="Anmelden"]
 {
   font-family: MS Shell Dlg;
+}
+
+select#\#0
+{
+  width: 100%;
+}
+
+input#\#1, input#\#2, input#\#3
+{
+  margin: 0;
+  width: 31%;
 }

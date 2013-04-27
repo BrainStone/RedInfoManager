@@ -17,6 +17,7 @@ $output = "";
 $data = array();
 $kategorien = array();
 $stationsstatus = array();
+$welten = array();
 $infostatus = array();
 $notifications = array();
 $ftp = null;
@@ -150,7 +151,7 @@ Password: <input type=\"password\" name=\"password\"><br>
 
 function display_data()
 {
-  global $output, $title, $data, $mysqli, $kategorien, $stationsstatus, $infostatus;
+  global $output, $title, $data, $mysqli, $kategorien, $stationsstatus, $infostatus, $welten;
   
   $title = "Admin-Seite";
   
@@ -164,7 +165,11 @@ function display_data()
   }
   
   $output .=
-"<form method=\"POST\">
+"<form class=\"search\">
+Station-ID: <input id=\"search1\" class=\"search\" name=\"Station-ID\">&nbsp;&nbsp;&nbsp;&nbsp;
+Station: <input id=\"search2\" class=\"search\" name=\"Station\">&nbsp;&nbsp;&nbsp;&nbsp;
+</form>
+<form method=\"POST\" class=\"search\" style=\"right: 5px;\">
 <input type=\"submit\" value=\"Abmelden\">
 <input type=\"hidden\" name=\"action\" value=\"logout\">
 </form>
@@ -192,7 +197,7 @@ function display_data()
   
   $result->free();
   
-  $result = $mysqli->query("SELECT * FROM `Stations-Status`");
+  $result = $mysqli->query("SELECT * FROM `stations-status`");
   
   while($r = $result->fetch_assoc())
   {
@@ -201,11 +206,20 @@ function display_data()
   
   $result->free();
   
-  $result = $mysqli->query("SELECT * FROM `Info-Status`");
+  $result = $mysqli->query("SELECT * FROM `info-status`");
   
   while($r = $result->fetch_assoc())
   {
     $infostatus[] = $r["Status"];
+  }
+  
+  $result->free();
+  
+  $result = $mysqli->query("SELECT * FROM `welten`");
+  
+  while($r = $result->fetch_assoc())
+  {
+    $welten[] = $r["Welt"];
   }
   
   $result->free();
@@ -386,7 +400,7 @@ function utf8_encode_array(array $array)
 
 function display()
 {
-  global $title, $output, $ftp, $notifications, $data, $kategorien, $stationsstatus, $infostatus;
+  global $title, $output, $ftp, $notifications, $data, $kategorien, $stationsstatus, $infostatus, $welten;
   
 ?>
 <!DOCTYPE HTML>
@@ -406,6 +420,7 @@ function display()
      var categories = <?php echo json_encode(utf8_encode_array($kategorien)); ?>;
      var stationstatus = <?php echo json_encode(utf8_encode_array($stationsstatus)); ?>;
      var infostatus = <?php echo json_encode(utf8_encode_array($infostatus)); ?>;
+     var worlds = <?php echo json_encode(utf8_encode_array($welten)); ?>;
     </script>    
     <title>RedInfoManager<?php
 
