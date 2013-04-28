@@ -82,8 +82,9 @@ form.search input
 input.edit
 {
   margin-right: 5px;
+  padding: 0;
   width: 95%;
-  font-size: 95%;
+  font-size: 85%;
 }
 
 div#meldung
@@ -113,22 +114,23 @@ select#\#1, select#\#2
   width: 50%;
 }
 
-input, select
+textarea
 {
   font-family: monospace;
 }
 
-input[value="Abmelden"], input[value="Anmelden"]
-{
-  font-family: MS Shell Dlg;
-}
-
 select#\#0
 {
-  width: 100%;
+  width: 50%;
 }
 
 input#\#1, input#\#2, input#\#3
+{
+  margin: 0;
+  width: 14%;
+}
+
+td[id$="#7"] input#\#1, td[id$="#7"] input#\#2, td[id$="#7"] input#\#3
 {
   margin: 0;
   width: 31%;
