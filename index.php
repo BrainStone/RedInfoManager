@@ -1,12 +1,23 @@
 <?php
-header("Content-Type: text/html;charset=utf-8");
 /**
   * Das hier ist die Haupdatei des RedInfoManager's
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.7.24
+  *   v0.8.1
   */
+
+// Header
+
+if($_SERVER['SERVER_PORT'] != 443)
+{ 
+  $httpsurl = "https://" . $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"] . (($_SERVER["QUERY_STRING"] == "") ? "" : ("?" . $_SERVER["QUERY_STRING"])); 
+
+  header("Location: " . $httpsurl); 
+}
+
+header("Content-Type: text/html;charset=utf-8");
+
 // Code
 
 session_start();
