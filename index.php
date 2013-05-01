@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.8.12
+  *   v0.8.15
   */
 
 // Header
@@ -361,7 +361,7 @@ function connect_to_database()
 {
   global $mysqli;
   
-  $mysqli = new mysqli("redstoneworld.de:3306", "rober_root", "fm/)X2urY=cB-N6*G.yb", "RedInfoManager");
+  $mysqli = new mysqli("redstoneworld.de", "rober_root", "fm/)X2urY=cB-N6*G.yb", "RedInfoManager", 3306);
   if($mysqli->connect_errno)
   {
     die("Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error);
