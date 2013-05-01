@@ -57,8 +57,6 @@ function registerHandler()
     
     switch(current_column)
     {
-    case 0:
-      return;
     case 1:
     case 4:
     case 8:
