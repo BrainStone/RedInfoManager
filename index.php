@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.8.6
+  *   v0.8.12
   */
 
 // Header
@@ -293,7 +293,9 @@ function short_string($string, $length)
     return $string;
   }
   
-  return explode("\r\n", wordwrap($string, $length - 3, "\r\n", true))[0] . "...";
+  $tmp = explode("\r\n", wordwrap($string, $length - 3, "\r\n", true));
+  
+  return $tmp[0] . "...";
 }
 
 function set_defaults()
@@ -359,7 +361,7 @@ function connect_to_database()
 {
   global $mysqli;
   
-  $mysqli = new mysqli("redstoneworld.de:3306", "rober_root", "*********", "RedInfoManager");
+  $mysqli = new mysqli("redstoneworld.de:3306", "rober_root", "fm/)X2urY=cB-N6*G.yb", "RedInfoManager");
   if($mysqli->connect_errno)
   {
     die("Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error);
@@ -427,6 +429,7 @@ function display()
     <meta name="robots" content="noindex, nofollow">
     <meta http-equiv="cache-control" content="no-cache">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.png">
     <script language="JavaScript" src="../core/js/jquery.js"></script>
     <script language="JavaScript" src="script.js"></script>
     <script>
