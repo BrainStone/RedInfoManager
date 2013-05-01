@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.8.5
+  *   v0.8.6
   */
 
 // Header
@@ -359,7 +359,7 @@ function connect_to_database()
 {
   global $mysqli;
   
-  $mysqli = new mysqli("localhost", "root", "", "redinfomanager");
+  $mysqli = new mysqli("redstoneworld.de:3306", "rober_root", "*********", "RedInfoManager");
   if($mysqli->connect_errno)
   {
     die("Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error);
@@ -425,6 +425,7 @@ function display()
     <meta name="copyright" content="BrainStone">    
     <meta http-equiv="content-language" content="de">    
     <meta name="robots" content="noindex, nofollow">
+    <meta http-equiv="cache-control" content="no-cache">
     <link rel="stylesheet" type="text/css" href="style.css">
     <script language="JavaScript" src="../core/js/jquery.js"></script>
     <script language="JavaScript" src="script.js"></script>
