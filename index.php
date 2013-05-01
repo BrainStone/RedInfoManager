@@ -4,12 +4,12 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.8.16
+  *   v0.8.17
   */
 
 // Header
 
-if($_SERVER['SERVER_PORT'] != 443)
+if(isset($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"] == "on"))
 { 
   $httpsurl = "https://" . $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"] . (($_SERVER["QUERY_STRING"] == "") ? "" : ("?" . $_SERVER["QUERY_STRING"])); 
 
