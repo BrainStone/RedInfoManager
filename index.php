@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.8.49
+  *   v0.9.3
   */
 
 // Header
@@ -112,7 +112,9 @@ function check_connection()
 
 function ajax()
 {
-  if(isset($_POST["action"]) && ($_POST["action"] == "updateDB"))
+  $action = (isset($_POST["action"])) ? $_POST["action"] : "";
+  
+  if($_POST["action"] == "updateDB")
   {
     updateDB();
   }
@@ -194,22 +196,22 @@ function display_data()
   }
   
   $output .=
-"<form class=\"search\">
+"<div class=\"header\"><form class=\"search\">
 Station-ID: <input id=\"search1\" class=\"search\" name=\"Station-ID\">&nbsp;&nbsp;&nbsp;&nbsp;
 Station: <input id=\"search2\" class=\"search\" name=\"Station\">&nbsp;&nbsp;&nbsp;&nbsp;
 Kategorie: <input id=\"search3\" class=\"search\" name=\"Kategorie\">&nbsp;&nbsp;&nbsp;&nbsp;
 Unterkategorie: <input id=\"search4\" class=\"search\" name=\"Unterkategorie\">&nbsp;&nbsp;&nbsp;&nbsp;
 Button-Position: <input id=\"search5\" class=\"search\" name=\"Button-Position\">
 </form>
-<form method=\"POST\" class=\"logout\" style=\"right: 5px;\">
+<form method=\"POST\" class=\"logout\">
 <input type=\"submit\" value=\"Abmelden\">
 <input type=\"hidden\" name=\"action\" value=\"logout\">
-</form>
+</form></div>
 <br>\n";
   
   connect_to_database();
   
-  $output .= printTable($mysqli->query("SELECT `Station-ID` AS `ID`, `Station`, CONCAT(`Kategorie`, ' (', `Unterkategorie`, ')') AS `Kategorie`, CONCAT(`Position-Welt`, ': ', `Position-X`, ', ', `Position-Y`, ', ', `Position-Z`) AS `Position`, `Artikel`, `Stations-Status`, `Info-Status`, CONCAT(`Position-Welt`, ': ', `Warp-X`, ', ', `Warp-Y`, ', ', `Warp-Z`) AS `Warp`, `Quelle`, `Erbauer`, `Datei` FROM `redinfomanager` ORDER BY `Station-ID`"), true);
+  $output .= printTable($mysqli->query("SELECT `Station-ID` AS `ID`, `Station`, CONCAT(`Kategorie`, ' (', `Unterkategorie`, ')') AS `Kategorie`, CONCAT(`Position-Welt`, ': ', `Position-X`, ', ', `Position-Y`, ', ', `Position-Z`) AS `Position`, `Artikel`, `Stations-Status`, `Info-Status`, CONCAT(`Position-Welt`, ': ', `Warp-X`, ', ', `Warp-Y`, ', ', `Warp-Z`) AS `Warp`, `Quelle`, `Erbauer`, `Datei`, ('<img src=\\\"Bearbeiten.png\\\" title=\\\"Bearbeiten\\\">') AS `Aktionen` FROM `redinfomanager` ORDER BY `Station-ID`"), true);
   
   $result = $mysqli->query("SELECT * FROM `redinfomanager`");
   
@@ -257,6 +259,8 @@ Button-Position: <input id=\"search5\" class=\"search\" name=\"Button-Position\"
   $result->free();
   $mysqli->close();
 }
+
+// Utility
 
 function printTable($result, $return)
 {
