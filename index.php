@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.8.48
+  *   v0.8.49
   */
 
 // Header
@@ -118,7 +118,7 @@ function ajax()
   }
 }
 
-function updateDB();
+function updateDB()
 {
   global $mysqli;
   
