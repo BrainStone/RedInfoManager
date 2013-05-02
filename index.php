@@ -4,12 +4,12 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.8.45
+  *   v0.8.48
   */
 
 // Header
 
-if((empty($_SERVER['HTTPS']) || ($_SERVER['HTTPS'] === 'off')) && ($_SERVER['SERVER_PORT'] != 443))
+if((empty($_SERVER["HTTPS"]) || ($_SERVER["HTTPS"] === 'off')) && ($_SERVER["SERVER_PORT"] != 443))
 { 
   $httpsurl = "https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] . (($_SERVER["QUERY_STRING"] == "") ? "" : ("?" . $_SERVER["QUERY_STRING"])); 
 
@@ -39,31 +39,7 @@ check_connection();
 
 if(isset($_POST["ajax"]) && ($_POST["ajax"] == "true"))
 {
-  if(isset($_POST["action"]) && ($_POST["action"] == "updateDB"))
-  {
-    if(isset($_POST["row"]) && $_POST["row"] >= 0)
-    {
-      unset($_POST["ajax"]);
-      unset($_POST["action"]);
-      unset($_POST["row"]);
-      
-      connect_to_database();     
-      set_defaults();
-      
-      if($mysqli->query("UPDATE `redinfomanager` SET " . generate_query() . " WHERE `Station-ID` = ". $_POST["Station-ID"]))
-      {
-        die("true");
-      }
-      else
-      {
-        die("Error in query: (" . $mysqli->sqlstate . ") " . $mysqli->error);
-      }
-    }
-    else
-    {
-      die("FAIL");
-    }
-  }
+  ajax();
 }
 else
 {
@@ -81,6 +57,8 @@ else
 }
 
 // Funktionen
+
+// SetUp
 
 function session_handler()
 {
@@ -129,6 +107,46 @@ function check_connection()
     exit();
   }
 }
+
+// AJAX
+
+function ajax()
+{
+  if(isset($_POST["action"]) && ($_POST["action"] == "updateDB"))
+  {
+    updateDB();
+  }
+}
+
+function updateDB();
+{
+  global $mysqli;
+  
+  if(isset($_POST["row"]) && $_POST["row"] >= 0)
+  {
+    unset($_POST["ajax"]);
+    unset($_POST["action"]);
+    unset($_POST["row"]);
+    
+    connect_to_database();     
+    set_defaults();
+    
+    if($mysqli->query("UPDATE `redinfomanager` SET " . generate_query() . " WHERE `Station-ID` = ". $_POST["Station-ID"]))
+    {
+      die("true");
+    }
+    else
+    {
+      die("Error in query: (" . $mysqli->sqlstate . ") " . $mysqli->error);
+    }
+  }
+  else
+  {
+    die("FAIL");
+  }
+}
+
+// HTML
 
 function login_page()
 {
