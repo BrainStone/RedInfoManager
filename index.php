@@ -4,14 +4,14 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.8.17
+  *   v0.8.45
   */
 
 // Header
 
-if(isset($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"] == "on"))
+if((empty($_SERVER['HTTPS']) || ($_SERVER['HTTPS'] === 'off')) && ($_SERVER['SERVER_PORT'] != 443))
 { 
-  $httpsurl = "https://" . $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"] . (($_SERVER["QUERY_STRING"] == "") ? "" : ("?" . $_SERVER["QUERY_STRING"])); 
+  $httpsurl = "https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] . (($_SERVER["QUERY_STRING"] == "") ? "" : ("?" . $_SERVER["QUERY_STRING"])); 
 
   header("Location: " . $httpsurl); 
 }
