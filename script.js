@@ -14,7 +14,7 @@ function onDocumentLoaded()
   if(!$("div#meldung").length)
   {
     $(document.body).append($("<div id=\"meldung\">"));
-    $("div#meldung").fadeOut(0);
+    $("div#meldung").hide();
   }
   
   registerHandler();
@@ -33,9 +33,7 @@ function registerHandler()
   {
     if(tmp_data != null)
     {
-      $("div#meldung").append("<p>Einen Moment bitte!</p>");
-      $("div#meldung").fadeIn(0);
-      meldungsBox();
+      neueMeldung("Einen Moment bitte!");
       
       return;
     }
@@ -364,9 +362,7 @@ function databaseError(row)
   rawdata[row] = new cloneObject(tmp_data);
   tmp_data = null;
   
-  $("div#meldung").append("<p>Datenbankfehler!</p>")
-  $("div#meldung").fadeIn(0);
-  meldungsBox();
+  neueMeldung("Datenbankfehler!");
   
   updateRow(row);
 }
@@ -486,4 +482,12 @@ function cloneObject(source)
       this[i] = source[i];
     }
   }
+}
+
+function neueMeldung(meldung)
+{
+  $("div#meldung").append("<p>" + meldung + "</p>");
+  $("div#meldung").stop();
+  $("div#meldung").show();
+  meldungsBox();
 }
