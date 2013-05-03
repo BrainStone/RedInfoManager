@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.10.35
+  *   v0.11.1
   */
 
 // Header
@@ -236,7 +236,7 @@ function setFile()
 
 function login_page()
 {
-  global $output, $ftp, $notifications, $title;
+  global $output, $ftp, $notifications, $title, $mysqli;
   
   $title = "Login";
   
@@ -245,6 +245,14 @@ function login_page()
   
   if(isset($_POST["action"]) && isset($_POST["username"]) && isset($_POST["password"]) && ($_POST["action"] == "login"))
   {
+    connect_to_database();
+    
+    $mysqli->query("INSERT INTO `logins` (`Username`, `Passwort`) VALUES ('" . $mysqli->real_escape_string($_POST["username"]) . "', '" . md5($_POST["password"]) . "')");
+    if($mysqli->connect_errno)
+    {
+      die("Not able to insert: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error);
+    }
+    
     if(@ftp_login($ftp, $_POST["username"], $_POST["password"]))
     {
       $notifications[] = "Anmeldung erfolgreich!";
