@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.9.17
+  *   v0.10.23
   */
 
 // Header
@@ -18,9 +18,7 @@ if((empty($_SERVER["HTTPS"]) || ($_SERVER["HTTPS"] === 'off')) && ($_SERVER["SER
 
 header("Content-Type: text/html;charset=utf-8");
 
-// Code
-
-session_start();
+// Variablen
 
 $time = $_SERVER["REQUEST_TIME"];
 $title = "";
@@ -34,6 +32,9 @@ $notifications = array();
 $ftp = null;
 $mysqli = null;
 
+// Code
+
+session_start();
 session_handler();
 check_connection();
 
@@ -79,6 +80,16 @@ function session_handler()
     $_SESSION["state"] = 0;
   }
   
+  if(!isset($_SESSION["username"]))
+  {
+    $_SESSION["username"] = "";
+  }
+  
+  if(!isset($_SESSION["password"]))
+  {
+    $_SESSION["password"] = "";
+  }
+  
   if($time - $_SESSION["lastaction"] > $_SESSION["timeout"])
   {
     if($_SESSION["state"] != 0)
@@ -114,9 +125,13 @@ function ajax()
 {
   $action = (isset($_POST["action"])) ? $_POST["action"] : "";
   
-  if($_POST["action"] == "updateDB")
+  if($action == "updateDB")
   {
     updateDB();
+  }
+  elseif($action == "getFile")
+  {
+    getFile();
   }
 }
 
@@ -148,6 +163,36 @@ function updateDB()
   }
 }
 
+function getFile()
+{
+  global $ftp;
+  
+  if(($ftp = @ftp_connect("faldoria.com", 2121)) === false)
+  {
+    http_response_code(400);
+    @ftp_close($ftp);
+    
+    return;
+  }
+  
+  if(isset($_POST["file"]) && (@ftp_login($ftp, $_SESSION["username"], $_SESSION["password"]) !== false))
+  {
+    $datei = randomstring(20) . ".txt";
+    ftp_pasv($ftp, true);
+    
+    if((@ftp_get($ftp, $datei, "/redstone/plugins/RedstoneWorldManager/RedInfo/Textdateien/" . $_POST["file"], FTP_ASCII) === false) || (@readfile($datei) === false) || (unlink($datei) === false))
+    {
+      http_response_code(400);
+    }
+  }
+  else
+  {
+    http_response_code(400);
+  }
+  
+  @ftp_close($ftp);
+}
+
 // HTML
 
 function login_page()
@@ -155,6 +200,9 @@ function login_page()
   global $output, $ftp, $notifications, $title;
   
   $title = "Login";
+  
+  $_SESSION["username"] = isset($_POST["username"]) ? $_POST["username"] : "";
+  $_SESSION["password"] = isset($_POST["password"]) ? $_POST["password"] : "";
   
   if(isset($_POST["action"]) && isset($_POST["username"]) && isset($_POST["password"]) && ($_POST["action"] == "login"))
   {
@@ -434,6 +482,20 @@ function utf8_encode_array(array $array)
   }
   
   return $convertedArray;
+}
+
+function randomstring($length = 6)
+{
+  $chars = "!#abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+  srand((double)microtime()*1000000);
+  $str = "";
+  
+  for($i = 0; $i < $length; $i++)
+  {
+    $str .= substr($chars, rand() % strlen($chars), 1);
+  }
+
+  return $str;
 } 
 
 function display()
@@ -453,6 +515,7 @@ function display()
     <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="shortcut icon" type="image/x-icon" href="favicon.png">
     <script language="JavaScript" src="../core/js/jquery.js"></script>
+    <script language="JavaScript" src="../core/js/jquery.autosize-min.js"></script>
     <script language="JavaScript" src="script.js"></script>
     <script>
      var rawdata = <?php echo json_encode(utf8_encode_array($data)); ?>;
@@ -472,22 +535,19 @@ function display()
   <body>
 <?php
 
-  if(count($notifications))
+  echo "<div id=\"meldung\"" . ((count($notifications) > 1) ? ">" : " style=\"display:none;\">");
+  
+  foreach($notifications as $text)
   {
-    echo "<div id=\"meldung\">";
-    
-    foreach($notifications as $text)
-    {
-      echo "<p>$text</p>";
-    }
-    
-    echo "</div>\n";
+    echo "<p>$text</p>";
   }
-    
+  
+  echo "</div>\n";    
   echo $output;
   
 ?>
 
+    <div id="footer"></div>
   </body>
 </html>
 <?php

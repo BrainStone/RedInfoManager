@@ -11,12 +11,6 @@ $(document).ready(onDocumentLoaded);
 
 function onDocumentLoaded()
 {
-  if(!$("div#meldung").length)
-  {
-    $(document.body).append($("<div id=\"meldung\">"));
-    $("div#meldung").hide();
-  }
-  
   registerHandler();
   
   meldungsBox();
@@ -89,7 +83,9 @@ function registerHandler()
     var row = obj.parent()[0].id.substr(1).split("#")[0];
     var image = obj[0].title;
     
-    console.log(row, image);
+    $.ajax({
+      data: {action: "getFile", file: rawdata[row]["Datei"], ajax: "true"}
+    });
   });
    
   $(document).on("blur", "input.edit, select.edit", function()
@@ -342,28 +338,59 @@ function updateRow(row)
 function ajaxSuccess(event, request, settings)
 {
   var tmp_array = unserialize(settings.data);
+  var action = tmp_array["action"];
+  delete tmp_array["action"];
+  delete tmp_array["ajax"];
   
-  if(request.responseText == "true")
+  if(action == "updateDB")
   {
-    tmp_data = null;
-    
-    delete tmp_array["ajax"];
-    var tmp_row = tmp_array["row"];
-    delete tmp_array["row"];
-    
-    rawdata[tmp_row] = new cloneObject(tmp_array);
+    if(request.responseText == "true")
+    {
+      tmp_data = null;
+      
+      var tmp_row = tmp_array["row"];
+      delete tmp_array["row"];
+      
+      rawdata[tmp_row] = new cloneObject(tmp_array);
+    }
+    else
+    {
+      console.log(request.responseText);
+      
+      databaseError(tmp_array["row"]);
+    }
   }
-  else
+  else if(action == "getFile")
   {
-    console.log(request.responseText);
-    
-    databaseError(tmp_array["row"]);
+    $("div#footer").prepend("<textarea>" + request.responseText + "</textarea>");
+    $("div#footer > textarea").autosize();
   }
 }
 
 function ajaxError(event, request, settings)
 {
-  databaseError(unserialize(settings.data)["row"]);
+  var tmp_array = unserialize(settings.data);
+  var action = tmp_array["action"];
+  delete tmp_array["action"];
+  delete tmp_array["ajax"];
+  
+  if(action == "updateDB")
+  {
+    if(request.responseText == "true")
+    {
+      databaseError(tmp_array["row"]);
+    }
+    else
+    {
+      console.log(request.responseText);
+      
+      databaseError(tmp_array["row"]);
+    }
+  }
+  else if(action == "getFile")
+  {
+    neueMeldung("Die Datei konnte nicht gelesen werden!");
+  }
 }
 
 function databaseError(row)
