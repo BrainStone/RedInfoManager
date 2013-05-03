@@ -100,8 +100,10 @@ function registerHandler()
     if(type == "Bearbeiten")
     {
       $.ajax({
-        data: {action: "setFile", file: rawdata[row]["Datei"], ajax: "true", content: $(this).val()}
+        data: {action: "setFile", file: rawdata[row]["Datei"], ajax: "true", content: $(this).val(), row: row}
       });
+      
+      $("div#footer > textarea.Bearbeiten#_" + row).remove();
     }
   });
    
@@ -380,7 +382,11 @@ function ajaxSuccess(event, request, settings)
   else if(action == "getFile")
   {
     $("div#footer").prepend("<textarea class=\"Bearbeiten\" id=\"_" + tmp_array["row"] + "\">" + request.responseText + "</textarea>");
-    $("div#footer > textarea").autosize();
+    var tmp = $("div#footer > textarea.Bearbeiten#_" + tmp_array["row"]);
+    tmp.focus().autosize().setCursorPosition(tmp.val().length);
+  }
+  else if(action == "setFile")
+  {
   }
 }
 
@@ -407,6 +413,10 @@ function ajaxError(event, request, settings)
   else if(action == "getFile")
   {
     neueMeldung("Die Datei konnte nicht gelesen werden!");
+  }
+  else if(action == "setFile")
+  {
+    neueMeldung("Die Datei konnte nicht gespeichert werden!");
   }
 }
 

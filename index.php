@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.10.27
+  *   v0.10.35
   */
 
 // Header
@@ -133,6 +133,10 @@ function ajax()
   {
     getFile();
   }
+  elseif($action == "setFile")
+  {
+    setFile();
+  }
   else
   {
     http_response_code(400);
@@ -182,9 +186,40 @@ function getFile()
   if(isset($_POST["file"]) && (@ftp_login($ftp, $_SESSION["username"], $_SESSION["password"]) !== false))
   {
     $datei = randomstring(20) . ".txt";
-    ftp_pasv($ftp, true);
+    @ftp_pasv($ftp, true);
     
     if((@ftp_get($ftp, $datei, "/redstone/plugins/RedstoneWorldManager/RedInfo/Textdateien/" . $_POST["file"], FTP_ASCII) === false) || (@readfile($datei) === false) || (unlink($datei) === false))
+    {
+      http_response_code(400);
+    }
+  }
+  else
+  {
+    http_response_code(400);
+  }
+  
+  @ftp_close($ftp);
+}
+
+function setFile()
+{
+  global $ftp;
+  
+  if(($ftp = @ftp_connect("faldoria.com", 2121)) === false)
+  {
+    http_response_code(400);
+    @ftp_close($ftp);
+    
+    return;
+  }
+  
+  if(isset($_POST["file"]) && isset($_POST["content"]) && (@ftp_login($ftp, $_SESSION["username"], $_SESSION["password"]) !== false))
+  {
+    $datei = randomstring(20) . ".txt";
+    file_put_contents($datei, $_POST["content"]);
+    @ftp_pasv($ftp, true);
+    
+    if((@ftp_put($ftp, "/redstone/plugins/RedstoneWorldManager/RedInfo/Textdateien/" . $_POST["file"], $datei, FTP_ASCII) === false) || (unlink($datei) === false))
     {
       http_response_code(400);
     }
