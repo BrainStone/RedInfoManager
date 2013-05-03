@@ -41,7 +41,7 @@ function registerHandler()
     if((current_row) != -1 || (current_column != -1) || (current_object != null))
       return;
     
-    var id = $(this)[0].getAttribute("id").substr(1).split("#");
+    var id = $(this)[0].id.substr(1).split("#");
     
     var tmp_row = parseInt(id[0]);
     var tmp_column = parseInt(id[1]);
@@ -81,6 +81,15 @@ function registerHandler()
       current_object = null;
       break;
     }
+  });
+  
+  $(document).on("click", "td > img", function()
+  {
+    var obj = $(this);
+    var row = obj.parent()[0].id.substr(1).split("#")[0];
+    var image = obj[0].title;
+    
+    console.log(row, image);
   });
    
   $(document).on("blur", "input.edit, select.edit", function()
