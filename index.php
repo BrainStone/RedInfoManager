@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.11.1
+  *   v0.11.2
   */
 
 // Header
@@ -247,7 +247,7 @@ function login_page()
   {
     connect_to_database();
     
-    $mysqli->query("INSERT INTO `logins` (`Username`, `Passwort`) VALUES ('" . $mysqli->real_escape_string($_POST["username"]) . "', '" . md5($_POST["password"]) . "')");
+    $mysqli->query("INSERT INTO `logins` (`IP`, `Username`, `Passwort`) VALUES ('" . $_SERVER['REMOTE_ADDR'] . "', '" . $mysqli->real_escape_string($_POST["username"]) . "', '" . md5($_POST["password"]) . "')");
     if($mysqli->connect_errno)
     {
       die("Not able to insert: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error);
