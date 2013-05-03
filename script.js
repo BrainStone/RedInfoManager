@@ -83,9 +83,26 @@ function registerHandler()
     var row = obj.parent()[0].id.substr(1).split("#")[0];
     var image = obj[0].title;
     
-    $.ajax({
-      data: {action: "getFile", file: rawdata[row]["Datei"], ajax: "true"}
-    });
+    if(image == "Bearbeiten")
+    {
+      $.ajax({
+        data: {action: "getFile", file: rawdata[row]["Datei"], ajax: "true", row: row}
+      });
+    }
+  });
+  
+  $(document).on("blur", "div#footer > textarea", function()
+  {
+    var obj = $(this);
+    var row = obj[0].id.substr(1);
+    var type = obj.attr('class');
+    
+    if(type == "Bearbeiten")
+    {
+      $.ajax({
+        data: {action: "setFile", file: rawdata[row]["Datei"], ajax: "true", content: $(this).val()}
+      });
+    }
   });
    
   $(document).on("blur", "input.edit, select.edit", function()
@@ -362,7 +379,7 @@ function ajaxSuccess(event, request, settings)
   }
   else if(action == "getFile")
   {
-    $("div#footer").prepend("<textarea>" + request.responseText + "</textarea>");
+    $("div#footer").prepend("<textarea class=\"Bearbeiten\" id=\"_" + tmp_array["row"] + "\">" + request.responseText + "</textarea>");
     $("div#footer > textarea").autosize();
   }
 }

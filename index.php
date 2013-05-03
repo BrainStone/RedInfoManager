@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.10.23
+  *   v0.10.27
   */
 
 // Header
@@ -132,6 +132,10 @@ function ajax()
   elseif($action == "getFile")
   {
     getFile();
+  }
+  else
+  {
+    http_response_code(400);
   }
 }
 
