@@ -4,7 +4,7 @@
   * 
   * Author: BrainStone    
   * Version:
-  *   v0.11.2
+  *   v0.11.18
   */
 
 // Header
@@ -247,14 +247,22 @@ function login_page()
   {
     connect_to_database();
     
-    $mysqli->query("INSERT INTO `logins` (`IP`, `Username`, `Passwort`) VALUES ('" . $_SERVER['REMOTE_ADDR'] . "', '" . $mysqli->real_escape_string($_POST["username"]) . "', '" . md5($_POST["password"]) . "')");
-    if($mysqli->connect_errno)
+    $nobruteforce = true;
+    $result = $mysqli->query("SELECT COUNT(*) FROM `logins` WHERE `Zeit` >= CURRENT_TIMESTAMP - 2");
+    $tmp = $result->fetch_row();
+    
+    if($tmp[0] != 0)
     {
-      die("Not able to insert: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error);
+      $nobruteforce = false;
+      $notifications[] = "Bitte warten Sie!";
     }
     
-    if(@ftp_login($ftp, $_POST["username"], $_POST["password"]))
+    $result->free();
+    
+    if($nobruteforce && @ftp_login($ftp, $_POST["username"], $_POST["password"]))
     {
+      log_login(true);
+      
       $notifications[] = "Anmeldung erfolgreich!";
       $_SESSION["state"] = 1;
       
@@ -262,6 +270,8 @@ function login_page()
       
       return;
     }
+    
+    log_login(false);
     
     $output .= "<h2>Anmeldung fehlgeschlagen!</h2>\n";
   }
@@ -356,6 +366,17 @@ Button-Position: <input id=\"search5\" class=\"search\" name=\"Button-Position\"
 }
 
 // Utility
+
+function log_login($erfolg)
+{
+  global $mysqli;
+  
+  $mysqli->query("INSERT INTO `logins` (`IP`, `Username`, `Passwort`, `Erfolgreich`) VALUES ('" . $_SERVER['REMOTE_ADDR'] . "', '" . $mysqli->real_escape_string($_POST["username"]) . "', '" . md5($_POST["password"]) . "', " . (($erfolg === true)? "TRUE" : "FALSE") . ")");
+  if($mysqli->connect_errno)
+  {
+    die("Not able to insert: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error);
+  }
+}
 
 function printTable($result, $return)
 {
@@ -582,7 +603,7 @@ function display()
   <body>
 <?php
 
-  echo "<div id=\"meldung\"" . ((count($notifications) > 1) ? ">" : " style=\"display:none;\">");
+  echo "<div id=\"meldung\"" . ((count($notifications) > 0) ? ">" : " style=\"display:none;\">");
   
   foreach($notifications as $text)
   {
